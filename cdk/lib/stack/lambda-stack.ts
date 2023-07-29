@@ -41,6 +41,7 @@ export class PictatoLambdaStack extends cdk.Stack {
       "ExistingBucket",
       `${getAccountUniqueName(props.context)}-pictato-bucket`.toLowerCase()
     );
+
     const imageResizerFunction = new PythonFunction(
       this,
       `${SYSTEM_NAME}-resize-image`,
@@ -51,7 +52,7 @@ export class PictatoLambdaStack extends cdk.Stack {
         index: "index.py",
         handler: "lambda_handler",
         role: lambdaRole,
-        timeout: cdk.Duration.seconds(30),
+        timeout: cdk.Duration.seconds(10),
         environment: {
           TARGET_BUCKET: bucket.bucketName,
         },
@@ -64,10 +65,15 @@ export class PictatoLambdaStack extends cdk.Stack {
         "arn:aws:lambda:ap-northeast-2:770693421928:layer:Klayers-p310-Pillow:2"
       )
     );
-    bucket.grantReadWrite(imageResizerFunction);
+
     bucket.addEventNotification(
       s3.EventType.OBJECT_CREATED,
-      new s3n.LambdaDestination(imageResizerFunction)
+      new s3n.LambdaDestination(imageResizerFunction),
+      {
+        prefix: "",
+      }
     );
+
+    bucket.grantReadWrite(imageResizerFunction);
   }
 }
