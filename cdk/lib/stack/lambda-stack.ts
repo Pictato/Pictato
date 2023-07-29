@@ -23,7 +23,7 @@ export class PictatoLambdaStack extends cdk.Stack {
     super(scope, id, props);
 
     //lambda와 s3를 위한 role
-    const lambdaRole = new Role(this, `${SYSTEM_NAME}-lambda-role`, {
+    const lambdaRoleForS3 = new Role(this, `${SYSTEM_NAME}-lambda-role`, {
       roleName: `${getAccountUniqueName(props.context)}-lambda-role`,
       assumedBy: new CompositePrincipal(
         new ServicePrincipal("lambda.amazonaws.com")
@@ -37,18 +37,22 @@ export class PictatoLambdaStack extends cdk.Stack {
     });
 
     //lambda와 dynamodb를 위한 role
-    const lambdaRole_for_dynamo = new Role(this, `${SYSTEM_NAME}-lambda-dynamo-role`, {
-      roleName: `${getAccountUniqueName(props.context)}-lambda-dynamo-role`,
-      assumedBy: new CompositePrincipal(
-        new ServicePrincipal("lambda.amazonaws.com")
-      ),
-      managedPolicies: [
-        ManagedPolicy.fromAwsManagedPolicyName(
-          "service-role/AWSLambdaBasicExecutionRole"
+    const lambdaRole_for_dynamo = new Role(
+      this,
+      `${SYSTEM_NAME}-lambda-dynamo-role`,
+      {
+        roleName: `${getAccountUniqueName(props.context)}-lambda-dynamo-role`,
+        assumedBy: new CompositePrincipal(
+          new ServicePrincipal("lambda.amazonaws.com")
         ),
-        ManagedPolicy.fromAwsManagedPolicyName("AmazonDynamoDBFullAccess"),
-      ],
-    });
+        managedPolicies: [
+          ManagedPolicy.fromAwsManagedPolicyName(
+            "service-role/AWSLambdaBasicExecutionRole"
+          ),
+          ManagedPolicy.fromAwsManagedPolicyName("AmazonDynamoDBFullAccess"),
+        ],
+      }
+    );
 
     // 이미지 리사이징
     const bucket = s3.Bucket.fromBucketName(
@@ -66,7 +70,7 @@ export class PictatoLambdaStack extends cdk.Stack {
         entry: path.join(__dirname, "../../../app/backend/resize-image"),
         index: "index.py",
         handler: "lambda_handler",
-        role: lambdaRole,
+        role: lambdaRoleForS3,
         timeout: cdk.Duration.seconds(10),
         environment: {
           TARGET_BUCKET: bucket.bucketName,
