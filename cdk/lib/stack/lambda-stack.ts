@@ -22,6 +22,7 @@ export class PictatoLambdaStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: PictatoStackProps) {
     super(scope, id, props);
 
+    //lambda와 s3를 위한 role
     const lambdaRole = new Role(this, `${SYSTEM_NAME}-lambda-role`, {
       roleName: `${getAccountUniqueName(props.context)}-lambda-role`,
       assumedBy: new CompositePrincipal(
@@ -32,6 +33,20 @@ export class PictatoLambdaStack extends cdk.Stack {
           "service-role/AWSLambdaBasicExecutionRole"
         ),
         ManagedPolicy.fromAwsManagedPolicyName("AmazonS3FullAccess"),
+      ],
+    });
+
+    //lambda와 dynamodb를 위한 role
+    const lambdaRole_for_dynamo = new Role(this, `${SYSTEM_NAME}-lambda-dynamo-role`, {
+      roleName: `${getAccountUniqueName(props.context)}-lambda-dynamo-role`,
+      assumedBy: new CompositePrincipal(
+        new ServicePrincipal("lambda.amazonaws.com")
+      ),
+      managedPolicies: [
+        ManagedPolicy.fromAwsManagedPolicyName(
+          "service-role/AWSLambdaBasicExecutionRole"
+        ),
+        ManagedPolicy.fromAwsManagedPolicyName("AmazonDynamoDBFullAccess"),
       ],
     });
 
