@@ -23,7 +23,7 @@ def lambda_handler(event, context):
         bucket = event["Records"][0]["s3"]["bucket"]["name"]
         key = event["Records"][0]["s3"]["object"]["key"]
 
-        if key.startswith("copy/"):
+        if key.startswith("resized/"):
             print("Image already resized:", key)
             return {"statusCode": 200, "body": json.dumps("Image already resized.")}
 
@@ -33,7 +33,7 @@ def lambda_handler(event, context):
         resized_image = resize_image(image_data)
 
         target_bucket = os.environ["TARGET_BUCKET"]
-        target_key = "copy/" + key
+        target_key = "resized/" + key
         s3.put_object(Bucket=target_bucket, Key=target_key, Body=resized_image)
 
         return {"statusCode": 200, "body": json.dumps("Image resized successfully!")}
