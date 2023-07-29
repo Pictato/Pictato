@@ -4,12 +4,14 @@ import { Construct } from "constructs";
 
 import { PictatoS3Stack } from "./stack/s3-stack";
 import { PictatoLambdaStack } from "./stack/lambda-stack";
+import { PictatoDynamoStack } from "./stack/dynamo-stack";
 import { Account } from "./config/accounts";
 import { SYSTEM_NAME } from "./config/commons";
 
 export interface PictatoStackProps extends cdk.StackProps {
   context: Account;
   s3Stack?: PictatoS3Stack;
+  dynamoStack? : PictatoDynamoStack;
 }
 
 export class PictatoStack extends cdk.Stack {
@@ -18,6 +20,9 @@ export class PictatoStack extends cdk.Stack {
 
     const s3Stack = new PictatoS3Stack(this, `${SYSTEM_NAME}-s3Stack`, props);
     props.s3Stack = s3Stack;
+
+    const dynamoStack = new PictatoDynamoStack(this, `${SYSTEM_NAME}-dynamoStack`, props)
+    props.dynamoStack = dynamoStack;
 
     new PictatoLambdaStack(this, `${SYSTEM_NAME}-lambdaStack`, props);
   }
