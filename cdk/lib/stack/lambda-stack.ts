@@ -10,7 +10,7 @@ import { PythonFunction } from "@aws-cdk/aws-lambda-python-alpha";
 import * as s3 from "aws-cdk-lib/aws-s3";
 import * as s3n from "aws-cdk-lib/aws-s3-notifications";
 
-import * as dynamodb from "aws-cdk-lib/aws-dynamodb"
+import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 
 import * as path from "path";
 
@@ -91,7 +91,7 @@ export class PictatoLambdaStack extends cdk.Stack {
       s3.EventType.OBJECT_CREATED,
       new s3n.LambdaDestination(imageResizerFunction),
       {
-        prefix: "",
+        prefix: "images/",
       }
     );
 
@@ -101,7 +101,7 @@ export class PictatoLambdaStack extends cdk.Stack {
       this,
       "pictatoTable",
       `${getAccountUniqueName(props.context)}-pictato-table`.toLowerCase()
-    )
+    );
 
     // dynamoDB create-post
     const createPostFunction = new PythonFunction(
@@ -110,15 +110,17 @@ export class PictatoLambdaStack extends cdk.Stack {
       {
         functionName: `${getAccountUniqueName(props.context)}-create-post`,
         runtime: Runtime.PYTHON_3_10,
-        entry: path.join(__dirname, "../../../app/backend/dynamodb/create-post"),
+        entry: path.join(
+          __dirname,
+          "../../../app/backend/dynamodb/create-post"
+        ),
         index: "create-post.py",
         handler: "lambda_handler",
         role: lambdaRoleForDynamo,
         environment: {
-          "TARGET_TABLE" : table.tableName
-        }
+          TARGET_TABLE: table.tableName,
+        },
       }
-
     );
 
     const readPostFunction = new PythonFunction(
@@ -132,11 +134,9 @@ export class PictatoLambdaStack extends cdk.Stack {
         handler: "lambda_handler",
         role: lambdaRoleForDynamo,
         environment: {
-          "TARGET_TABLE" : table.tableName
-        }
+          TARGET_TABLE: table.tableName,
+        },
       }
-
     );
-
   }
 }
