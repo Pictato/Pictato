@@ -13,11 +13,15 @@ export class PictatoDynamoStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: PictatoStackProps) {
     super(scope, id, props);
 
-    this.promptTable = new Table(this, `${SYSTEM_NAME}-moneybook-table`, {
-      tableName: `${getAccountUniqueName(props.context)}-moneybook-table`,
+    this.promptTable = new Table(this, `${SYSTEM_NAME}-pictato-table`, {
+      tableName: `${getAccountUniqueName(props.context)}-pictato-table`.toLowerCase(),
             partitionKey: {
                 name: 'user-id',
                 type: AttributeType.STRING
+            },
+            sortKey: {
+              name:'index',
+              type: AttributeType.STRING
             },
             billingMode: BillingMode.PAY_PER_REQUEST,
     })
