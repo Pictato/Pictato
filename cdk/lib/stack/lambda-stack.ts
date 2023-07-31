@@ -123,6 +123,7 @@ export class PictatoLambdaStack extends cdk.Stack {
       }
     );
 
+    //DB read_post
     const readPostFunction = new PythonFunction(
       this,
       `${SYSTEM_NAME}-read-post`,
@@ -131,6 +132,26 @@ export class PictatoLambdaStack extends cdk.Stack {
         runtime: Runtime.PYTHON_3_10,
         entry: path.join(__dirname, "../../../app/backend/dynamodb/read-post"),
         index: "read-post.py",
+        handler: "lambda_handler",
+        role: lambdaRoleForDynamo,
+        environment: {
+          TARGET_TABLE: table.tableName,
+        },
+      }
+    );
+
+    // DB delete_post
+    const deletePostFunction = new PythonFunction(
+      this,
+      `${SYSTEM_NAME}-delete-post`,
+      {
+        functionName: `${getAccountUniqueName(props.context)}-delete-post`,
+        runtime: Runtime.PYTHON_3_10,
+        entry: path.join(
+          __dirname,
+          "../../../app/backend/dynamodb/delete-post"
+        ),
+        index: "delete-post.py",
         handler: "lambda_handler",
         role: lambdaRoleForDynamo,
         environment: {
