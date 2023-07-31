@@ -91,7 +91,7 @@ export class PictatoLambdaStack extends cdk.Stack {
       s3.EventType.OBJECT_CREATED,
       new s3n.LambdaDestination(imageResizerFunction),
       {
-        prefix: "",
+        prefix: "images/",
       }
     );
 
