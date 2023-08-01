@@ -7,11 +7,13 @@ import io
 def lambda_handler(event, context):
     target_table = io.envrion["TARGET_TABLE"]
 
+    response_body = json.loads(event["body"])
+
     dynamodb = boto3.resource("dynamodb")
     table = dynamodb.Table(target_table)
 
     # 데이터 조회하기 위한 user-id 받아오기
-    userID = event["user-id"]
+    userID = response_body["user-id"]
 
     # user-id 속성이 같은 놈들 return
     query = table.query(KeyConditionExpression=Key("user-id").eq(userID))
