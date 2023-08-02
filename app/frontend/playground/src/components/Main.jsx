@@ -15,7 +15,11 @@ const Main = () => {
           Pictato
           <div className="badge badge-secondary">Playground</div>
         </h2>
-        <p>React playground for Pictato with Amazon Web Services</p>
+        <p>
+          React playground for Pictato
+          <br />
+          with Amazon Web Services
+        </p>
         <div className="card-actions">
           <button
             className="btn btn-primary"
