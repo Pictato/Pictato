@@ -1,19 +1,28 @@
 import { useRef } from "react";
 
+import { dynamoApi } from "../apis/dynamoApi";
+
 const PostTest = () => {
   const fileRef = useRef(undefined);
   const memoRef = useRef("");
 
-  const handlePost = () => {
-    const DYNAMO_DATA = {
-      fileName: fileRef.current.files[0].name,
-      memo: memoRef.current.value,
-    };
+  const handlePost = async () => {
+    try {
+      const DYNAMO_DATA = {
+        userId: "test",
+        index: "1",
+        fileName: fileRef.current.files[0].name,
+        memo: memoRef.current.value,
+      };
+
+      console.log(await dynamoApi.createPost(DYNAMO_DATA));
+
+      alert("POST에 성공했습니다.");
+    } catch (err) {
+      alert(`POST에 실패했습니다. (${err})`);
+    }
 
     const S3_DATA = fileRef.current.files[0];
-
-    console.log(DYNAMO_DATA);
-    console.log(S3_DATA);
   };
 
   return (
