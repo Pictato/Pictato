@@ -5,8 +5,15 @@ const PostTest = () => {
   const memoRef = useRef("");
 
   const handlePost = () => {
-    console.log(fileRef.current.files[0]);
-    console.log(memoRef.current.value);
+    const DYNAMO_DATA = {
+      fileName: fileRef.current.files[0].name,
+      memo: memoRef.current.value,
+    };
+
+    const S3_DATA = fileRef.current.files[0];
+
+    console.log(DYNAMO_DATA);
+    console.log(S3_DATA);
   };
 
   return (
