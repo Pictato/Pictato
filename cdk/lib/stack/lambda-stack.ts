@@ -23,6 +23,8 @@ import { SYSTEM_NAME } from "../config/commons";
 export class PictatoLambdaStack extends cdk.Stack {
   public lambdaReadPostFunction: PythonFunction;
   public lambdaCreatePostFunction: PythonFunction;
+  public lambdaDeletePostFunction: PythonFunction;
+  public lambdaGetOneDataFunction: PythonFunction;
 
   constructor(scope: Construct, id: string, props: PictatoStackProps) {
     super(scope, id, props);
@@ -164,5 +166,26 @@ export class PictatoLambdaStack extends cdk.Stack {
         },
       }
     );
+    this.lambdaDeletePostFunction = deletePostFunction;
+
+    const getOneDataFunction = new PythonFunction(
+      this,
+      `${SYSTEM_NAME}-get-one-data`,
+      {
+        functionName: `${getAccountUniqueName(props.context)}-get-one-data`,
+        runtime: Runtime.PYTHON_3_10,
+        entry: path.join(
+          __dirname,
+          "../../../app/backend/dynamodb/get-one-data"
+        ),
+        index: "get-one-data.py",
+        handler: "lambda_handler",
+        role: lambdaRoleForDynamo,
+        environment: {
+          TARGET_TABLE: table.tableName,
+        },
+      }
+    );
+    this.lambdaGetOneDataFunction = getOneDataFunction;
   }
 }
