@@ -1,11 +1,11 @@
 import json
 import boto3
 from boto3.dynamodb.conditions import Key
-import io
+import os
 
 
 def lambda_handler(event, context):
-    target_table = io.envrion["TARGET_TABLE"]
+    target_table = os.environ["TARGET_TABLE"]
 
     dynamodb = boto3.resource("dynamodb")
     table = dynamodb.Table(target_table)
