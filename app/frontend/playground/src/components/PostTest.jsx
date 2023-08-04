@@ -1,30 +1,30 @@
 import { useRef } from "react";
 
 import { dynamoApi } from "../apis/dynamoApi";
+import { s3Api } from "../apis/s3Api";
 
 const PostTest = () => {
   const userIdRef = useRef("");
-  const indexRef = useRef(0);
   const fileRef = useRef(undefined);
   const memoRef = useRef("");
 
   const handlePostRequest = async () => {
     try {
       const DYNAMO_DATA = {
-        userId: userIdRef.current.value,
-        index: indexRef.current.value,
         fileName: fileRef.current.files[0].name,
         memo: memoRef.current.value,
       };
 
-      await dynamoApi.createPost(DYNAMO_DATA);
+      const formData = new FormData();
+      formData.append("image-file", fileRef.current.files[0]);
+
+      await dynamoApi.createPost(userIdRef.current.value, DYNAMO_DATA);
+      await s3Api.postImage(fileRef.current.files[0].name, formData);
 
       alert("POST에 성공했습니다.");
     } catch (err) {
       alert(`POST에 실패했습니다. (${err})`);
     }
-
-    const S3_DATA = fileRef.current.files[0];
   };
 
   return (
@@ -35,11 +35,6 @@ const PostTest = () => {
             className="input input-bordered w-full"
             placeholder="Username"
             ref={userIdRef}
-          />
-          <input
-            className="input input-bordered w-full"
-            placeholder="Index"
-            ref={indexRef}
           />
           <input
             type="file"
