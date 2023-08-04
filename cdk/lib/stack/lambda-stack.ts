@@ -21,6 +21,9 @@ import { PictatoStackProps } from "../pictato-stack";
 import { SYSTEM_NAME } from "../config/commons";
 
 export class PictatoLambdaStack extends cdk.Stack {
+  public lambdaReadPostFunction: PythonFunction;
+  public lambdaCreatePostFunction: PythonFunction;
+
   constructor(scope: Construct, id: string, props: PictatoStackProps) {
     super(scope, id, props);
 
@@ -122,6 +125,7 @@ export class PictatoLambdaStack extends cdk.Stack {
         },
       }
     );
+    this.lambdaCreatePostFunction = createPostFunction;
 
     //DB read_post
     const readPostFunction = new PythonFunction(
@@ -139,6 +143,7 @@ export class PictatoLambdaStack extends cdk.Stack {
         },
       }
     );
+    this.lambdaReadPostFunction = readPostFunction;
 
     // DB delete_post
     const deletePostFunction = new PythonFunction(
