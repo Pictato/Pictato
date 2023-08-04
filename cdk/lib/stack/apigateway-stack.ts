@@ -50,10 +50,6 @@ export class PictatoApiGatewayStack extends cdk.Stack {
     const users = api.root.addResource("gallery");
     const userId = users.addResource("{user_id}");
 
-    lambdaStack.lambdaReadPostFunction.addPermission("invokePremisson", {
-      principal: new ServicePrincipal("apigateway.amazonaws.com"),
-    });
-
     const readRequest = userId.addMethod(
       "GET",
       new apigateway.LambdaIntegration(lambdaStack.lambdaReadPostFunction, {
@@ -81,10 +77,6 @@ export class PictatoApiGatewayStack extends cdk.Stack {
       },
     });
 
-    lambdaStack.lambdaCreatePostFunction.addPermission("invokePremisson", {
-      principal: new ServicePrincipal("apigateway.amazonaws.com"),
-    });
-
     const createRequest = userId.addMethod(
       "POST",
       new apigateway.LambdaIntegration(lambdaStack.lambdaCreatePostFunction, {
@@ -107,6 +99,64 @@ export class PictatoApiGatewayStack extends cdk.Stack {
     );
 
     createRequest.addMethodResponse({
+      statusCode: "200",
+      responseParameters: {
+        "method.response.header.Access-Control-Allow-Origin": true,
+      },
+    });
+
+    const index = userId.addResource("{index}");
+
+    const oneDataRequest = index.addMethod(
+      "GET",
+      new apigateway.LambdaIntegration(lambdaStack.lambdaGetOneDataFunction, {
+        proxy: false,
+        requestTemplates: {
+          "application/json": `{
+              "userId": "$input.params('user_id')",
+              "index": "$input.params('index')"
+            }`,
+        },
+        integrationResponses: [
+          {
+            statusCode: "200",
+            responseParameters: {
+              "method.response.header.Access-Control-Allow-Origin": "'*'",
+            },
+          },
+        ],
+      })
+    );
+
+    oneDataRequest.addMethodResponse({
+      statusCode: "200",
+      responseParameters: {
+        "method.response.header.Access-Control-Allow-Origin": true,
+      },
+    });
+
+    const deletePostRequest = index.addMethod(
+      "DELETE",
+      new apigateway.LambdaIntegration(lambdaStack.lambdaDeletePostFunction, {
+        proxy: false,
+        requestTemplates: {
+          "application/json": `{
+              "userId": "$input.params('user_id')",
+              "index": "$input.params('index')"
+            }`,
+        },
+        integrationResponses: [
+          {
+            statusCode: "200",
+            responseParameters: {
+              "method.response.header.Access-Control-Allow-Origin": "'*'",
+            },
+          },
+        ],
+      })
+    );
+
+    deletePostRequest.addMethodResponse({
       statusCode: "200",
       responseParameters: {
         "method.response.header.Access-Control-Allow-Origin": true,
