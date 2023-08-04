@@ -3,14 +3,16 @@ import axios from "axios";
 const ROUTE = "";
 
 const s3Instance = axios.create({
-  baseURL: "https://",
-  headers: {
-    AccessControlAllowOrigin: "*",
-  },
+  baseURL:
+    "https://52ks59qzm5.execute-api.ap-northeast-2.amazonaws.com/default",
 });
 
-const postImage = async () => {
-  return await s3Instance.post();
+const postImage = async (fileName, formData) => {
+  return await s3Instance.post(`/image?filename=${fileName}`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 };
 
 const getImage = async () => {
