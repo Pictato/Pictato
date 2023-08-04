@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 
 import { dynamoApi } from "../apis/dynamoApi";
 
-const GetTest = () => {
+const GetDynamoTest = () => {
   const [data, setData] = useState([]);
   const userIdRef = useRef("");
 
@@ -60,4 +60,4 @@ const GetTest = () => {
   );
 };
 
-export default GetTest;
+export default GetDynamoTest;
