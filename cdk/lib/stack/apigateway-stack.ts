@@ -1,5 +1,4 @@
 import * as cdk from "aws-cdk-lib";
-import * as s3 from "aws-cdk-lib/aws-s3";
 
 import { Construct } from "constructs";
 
@@ -15,6 +14,7 @@ import {
   CompositePrincipal,
 } from "aws-cdk-lib/aws-iam";
 import { PictatoLambdaStack } from "./lambda-stack";
+import { Service } from "aws-cdk-lib/aws-servicediscovery";
 
 export class PictatoApiGatewayStack extends cdk.Stack {
   constructor(
@@ -24,21 +24,6 @@ export class PictatoApiGatewayStack extends cdk.Stack {
     lambdaStack: PictatoLambdaStack
   ) {
     super(scope, id, props);
-
-    const lambdaAccessRole = new Role(
-      this,
-      `${getAccountUniqueName(props.context)}-api-lambda-access-role`,
-      {
-        assumedBy: new CompositePrincipal(
-          new ServicePrincipal("lambda.amazonaws.com")
-        ),
-        managedPolicies: [
-          ManagedPolicy.fromAwsManagedPolicyName(
-            "service-role/AWSLambdaBasicExecutionRole"
-          ),
-        ],
-      }
-    );
 
     const api = new apigateway.RestApi(this, `${SYSTEM_NAME}-pictato-api`, {
       endpointConfiguration: {
@@ -65,7 +50,11 @@ export class PictatoApiGatewayStack extends cdk.Stack {
     const users = api.root.addResource("gallery");
     const userId = users.addResource("{user_id}");
 
-    userId.addMethod(
+    lambdaStack.lambdaReadPostFunction.addPermission("invokePremisson", {
+      principal: new ServicePrincipal("apigateway.amazonaws.com"),
+    });
+
+    const readRequest = userId.addMethod(
       "GET",
       new apigateway.LambdaIntegration(lambdaStack.lambdaReadPostFunction, {
         proxy: false,
@@ -74,10 +63,29 @@ export class PictatoApiGatewayStack extends cdk.Stack {
               "userId": "$input.params('user_id')"
             }`,
         },
+        integrationResponses: [
+          {
+            statusCode: "200",
+            responseParameters: {
+              "method.response.header.Access-Control-Allow-Origin": "'*'",
+            },
+          },
+        ],
       })
     );
 
-    userId.addMethod(
+    readRequest.addMethodResponse({
+      statusCode: "200",
+      responseParameters: {
+        "method.response.header.Access-Control-Allow-Origin": true,
+      },
+    });
+
+    lambdaStack.lambdaCreatePostFunction.addPermission("invokePremisson", {
+      principal: new ServicePrincipal("apigateway.amazonaws.com"),
+    });
+
+    const createRequest = userId.addMethod(
       "POST",
       new apigateway.LambdaIntegration(lambdaStack.lambdaCreatePostFunction, {
         proxy: false,
@@ -87,7 +95,22 @@ export class PictatoApiGatewayStack extends cdk.Stack {
             "requestBody": $input.json("$")
             }`,
         },
+        integrationResponses: [
+          {
+            statusCode: "200",
+            responseParameters: {
+              "method.response.header.Access-Control-Allow-Origin": "'*'",
+            },
+          },
+        ],
       })
     );
+
+    createRequest.addMethodResponse({
+      statusCode: "200",
+      responseParameters: {
+        "method.response.header.Access-Control-Allow-Origin": true,
+      },
+    });
   }
 }
