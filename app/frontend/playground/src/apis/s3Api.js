@@ -15,8 +15,12 @@ const postImage = async (fileName, formData) => {
   });
 };
 
-const getImage = async () => {
-  return await s3Instance.get();
+const getImage = async (fileName) => {
+  return await s3Instance.get(`/image?filename=${fileName}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 };
 
 export const s3Api = { postImage, getImage };
