@@ -1,22 +1,28 @@
 import json
 import boto3
-from boto3.dynamodb.conditions import Key
 import io
 
 
 def lambda_handler(event, context):
     target_table = io.envrion["TARGET_TABLE"]
 
-    response_body = json.loads(event["body"])
-
     dynamodb = boto3.resource("dynamodb")
     table = dynamodb.Table(target_table)
 
-    # 삭제하기 위한 user-id, index 받아오기 > 이후 수정 필요
-    userID = response_body["user-id"]
-    index = response_body["index"]
+    try:
+        index = event["index"]
+        userID = event["userId"]
 
-    # user-id 와 index 를 통해 튜플 삭제
-    table.delete_item(Key={"user-id": userID, "index": index})
+    except:
+        return {
+            "statusCode": 500,
+            "body": json.dumps("Data loading error!"),
+            "error": event,
+        }
 
-    return {"statusCode": 200, "body": json.dumps({"message": "delete post complete!"})}
+    try:
+        table.delete_item(Key={"user-id": userID, "index": index})
+    except:
+        return {"statusCode": 500, "body": json.dumps("delete item  error!!")}
+
+    return {"statusCode": 200, "body": json.dumps("Delete data successful!!")}
