@@ -9,7 +9,6 @@ const GetTest = () => {
   const handleGetRequest = async () => {
     try {
       const res = await dynamoApi.readPost(userIdRef.current.value);
-      console.log(res.data.body);
       setData(res.data.body);
 
       alert("GET에 성공했습니다.");
