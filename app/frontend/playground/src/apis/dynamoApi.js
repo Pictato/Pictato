@@ -24,8 +24,10 @@ const readPost = async (userId, index) => {
   });
 };
 
-const deletePost = async () => {
-  return await dynamoInstance.delete();
+const deletePost = async (userId, index) => {
+  return await dynamoInstance.delete(`${ROUTE}/${userId}/${index}`, {
+    headers: { "Content-Type": "application/json" },
+  });
 };
 
 export const dynamoApi = { createPost, readAllPost, readPost, deletePost };
