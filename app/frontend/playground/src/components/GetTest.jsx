@@ -27,7 +27,7 @@ const GetTest = () => {
   };
 
   return (
-    <div className="card bg-base-100 shadow-xl">
+    <div className="card w-[369px] h-[585px] bg-base-100 shadow-xl">
       <div className="card-body">
         <h2 className="card-title">
           <div className="join w-full">

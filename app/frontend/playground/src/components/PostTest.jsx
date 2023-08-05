@@ -28,7 +28,7 @@ const PostTest = () => {
   };
 
   return (
-    <div className="card w-96 bg-base-100 shadow-xl">
+    <div className="card w-[369px] h-[585px] bg-base-100 shadow-xl">
       <div className="card-body">
         <h2 className="card-title flex-col">
           <input
@@ -47,8 +47,10 @@ const PostTest = () => {
           placeholder="Memo"
           ref={memoRef}
         ></textarea>
-        <div className="card-actions justify-end" onClick={handlePostRequest}>
-          <button className="btn btn-primary">POST</button>
+        <div className="card-actions justify-end">
+          <button className="btn btn-primary" onClick={handlePostRequest}>
+            POST
+          </button>
         </div>
       </div>
     </div>

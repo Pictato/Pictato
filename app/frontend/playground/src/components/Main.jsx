@@ -6,7 +6,7 @@ const Main = () => {
   const [count, setCount] = useState(0);
 
   return (
-    <div className="card w-96 bg-base-100 shadow-xl">
+    <div className="card w-[369px] h-[585px] bg-base-100 shadow-xl">
       <figure className="px-10 pt-10">
         <img src={Pictato} alt="Pictato" className="rounded-xl" />
       </figure>
