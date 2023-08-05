@@ -1,9 +1,9 @@
 import axios from "axios";
 
-const ROUTE = "user";
+const ROUTE = "gallery";
 
 const dynamoInstance = axios.create({
-  baseURL: "https://a2lvwokvnf.execute-api.ap-northeast-2.amazonaws.com/test", // TODO: Add your API Gateway URL
+  baseURL: "", // TODO: Add your API Gateway URL
 });
 
 const createPost = async (userId, data) => {
@@ -12,8 +12,14 @@ const createPost = async (userId, data) => {
   });
 };
 
-const readPost = async (userId) => {
+const readAllPost = async (userId) => {
   return await dynamoInstance.get(`${ROUTE}/${userId}`, {
+    headers: { "Content-Type": "application/json" },
+  });
+};
+
+const readPost = async (userId, index) => {
+  return await dynamoInstance.get(`${ROUTE}/${userId}/${index}`, {
     headers: { "Content-Type": "application/json" },
   });
 };
@@ -22,4 +28,4 @@ const deletePost = async () => {
   return await dynamoInstance.delete();
 };
 
-export const dynamoApi = { createPost, readPost, deletePost };
+export const dynamoApi = { createPost, readAllPost, readPost, deletePost };
