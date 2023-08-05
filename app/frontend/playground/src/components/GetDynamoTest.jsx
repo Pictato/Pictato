@@ -17,6 +17,18 @@ const GetDynamoTest = () => {
     }
   };
 
+  const handleDelete = async (userId, index) => {
+    try {
+      await dynamoApi.deletePost(userId, index);
+      const res = await dynamoApi.readAllPost(userId);
+      setData(res.data.body);
+
+      alert("DELETE에 성공했습니다.");
+    } catch (err) {
+      alert(`DELETE에 실패했습니다. (${err})`);
+    }
+  };
+
   return (
     <div className="card bg-base-100 shadow-xl">
       <div className="card-body">
@@ -42,6 +54,7 @@ const GetDynamoTest = () => {
               <th>Username</th>
               <th>File</th>
               <th>Memo</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -51,6 +64,14 @@ const GetDynamoTest = () => {
                 <td>{item["user-id"]}</td>
                 <td>{item["file-name"]}</td>
                 <td>{item.memo}</td>
+                <td>
+                  <button
+                    className="btn btn-error btn-xs"
+                    onClick={() => handleDelete(item["user-id"], item.index)}
+                  >
+                    DELETE
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
