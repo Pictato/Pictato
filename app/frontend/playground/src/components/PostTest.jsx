@@ -48,7 +48,7 @@ const PostTest = () => {
           ref={memoRef}
         ></textarea>
         <div className="card-actions justify-end" onClick={handlePostRequest}>
-          <button className="btn btn-primary">Add</button>
+          <button className="btn btn-primary">POST</button>
         </div>
       </div>
     </div>
