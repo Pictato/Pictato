@@ -1,6 +1,7 @@
+import { Account } from "./contexts/Account.jsx";
+
+import LoginStatus from "./components/LoginStatus";
 import Main from "./components/Main";
-import SignUp from "./components/SignUp";
-import Login from "./components/Login";
 import PostTest from "./components/PostTest";
 import GetDynamoTest from "./components/GetDynamoTest";
 import GetS3Test from "./components/GetS3Test";
@@ -8,12 +9,11 @@ import GetTest from "./components/GetTest";
 
 const App = () => {
   return (
-    <>
+    <Account>
       <div className="divider text-2xl font-bold">Authentication</div>
       <div className="flex p-4 gap-4">
         <Main />
-        <SignUp />
-        <Login />
+        <LoginStatus />
       </div>
       <div className="divider text-2xl font-bold">POST</div>
       <div className="flex p-4 gap-4">
@@ -25,7 +25,7 @@ const App = () => {
         <GetS3Test />
         <GetTest />
       </div>
-    </>
+    </Account>
   );
 };
 
