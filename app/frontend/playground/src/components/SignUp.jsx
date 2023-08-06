@@ -30,7 +30,7 @@ const SignUp = () => {
             onChange={(event) => setEmail(event.target.value)}
           />
         </div>
-        <div className="form-contro w-full max-w-xs">
+        <div className="form-control w-full max-w-xs">
           <label className="label" htmlFor="password">
             <span className="label-text">Password</span>
           </label>
