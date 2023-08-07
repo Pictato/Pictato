@@ -207,7 +207,7 @@ export class PictatoLambdaStack extends cdk.Stack {
         },
       }
     );
-    this.lambdaPostImageFunction = getOneDataFunction;
+    this.lambdaPostImageFunction = postImageFunction;
 
     // GET image lambdag function
     const getImageFunction = new PythonFunction(
