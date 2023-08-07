@@ -172,9 +172,11 @@ export class PictatoApiGatewayStack extends cdk.Stack {
     const postImageRequest = image.addMethod(
       "POST",
       new apigateway.LambdaIntegration(lambdaStack.lambdaPostImageFunction, {
+        contentHandling: apigateway.ContentHandling.CONVERT_TO_TEXT,
         proxy: false,
         requestTemplates: {
-          "multipart/form-data": `##  See http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-template-reference.html
+          "multipart/form-data": `
+          ##  See http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-template-reference.html
           ##  This template will pass through all parameters including path, querystring, header, stage variables, and context through to the integration endpoint via the body/payload
           #set($allParams = $input.params())
           {
