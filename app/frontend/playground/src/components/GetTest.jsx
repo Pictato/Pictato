@@ -17,7 +17,10 @@ const GetTest = () => {
       );
       setDesc(res.data.body.memo);
 
-      const image = await s3Api.getImage("test", res.data.body["file-name"]);
+      const image = await s3Api.getImage(
+        userIdRef.current.value,
+        res.data.body["file-name"]
+      );
       setFile(image.data.body);
 
       alert("GET에 성공했습니다.");

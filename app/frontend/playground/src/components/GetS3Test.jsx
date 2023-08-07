@@ -4,13 +4,15 @@ import { s3Api } from "../apis/s3Api";
 
 const GetS3Test = () => {
   const [file, setFile] = useState(null);
+  const userIdRef = useRef("");
   const fileNameRef = useRef("");
 
   const handleGetRequest = async () => {
     try {
-      // getImage 함수의 userId 파라미터에 넣을게 필요한데 여기는 단순히 s3테스트라 괜찮을듯?
-      // GetTest.jsx 에서만 userId 잘 넣어주면 될듯
-      const res = await s3Api.getImage("test", fileNameRef.current.value);
+      const res = await s3Api.getImage(
+        userIdRef.current.value,
+        fileNameRef.current.value
+      );
       setFile(res.data.body);
 
       alert("GET에 성공했습니다.");
@@ -24,6 +26,11 @@ const GetS3Test = () => {
       <div className="card-body">
         <h2 className="card-title">
           <div className="join w-full">
+            <input
+              className="input input-bordered join-item w-full"
+              placeholder="Username"
+              ref={userIdRef}
+            />
             <input
               className="input input-bordered join-item w-full"
               placeholder="File Name"
