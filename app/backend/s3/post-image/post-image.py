@@ -15,7 +15,7 @@ def lambda_handler(event, context):
         if image_start == -1 or image_end == -1:
             raise ValueError("Invalid image data")
         decoded_image = image_decode[image_start : image_end + 2]
-        bucket_name = os.environ("TARGET_BUCKET")
+        bucket_name = os.environ["TARGET_BUCKET"]
         response = client.put_object(
             Body=decoded_image,
             Bucket=bucket_name,
