@@ -25,6 +25,8 @@ export class PictatoLambdaStack extends cdk.Stack {
   public lambdaCreatePostFunction: PythonFunction;
   public lambdaDeletePostFunction: PythonFunction;
   public lambdaGetOneDataFunction: PythonFunction;
+  public lambdaPostImageFunction: PythonFunction;
+  public lambdaGetImageFunction: PythonFunction;
 
   constructor(scope: Construct, id: string, props: PictatoStackProps) {
     super(scope, id, props);
@@ -108,7 +110,7 @@ export class PictatoLambdaStack extends cdk.Stack {
       `${getAccountUniqueName(props.context)}-pictato-table`.toLowerCase()
     );
 
-    // dynamoDB create-post
+    // POST create post lambda function
     const createPostFunction = new PythonFunction(
       this,
       `${SYSTEM_NAME}-create-post`,
@@ -129,7 +131,7 @@ export class PictatoLambdaStack extends cdk.Stack {
     );
     this.lambdaCreatePostFunction = createPostFunction;
 
-    //DB read_post
+    //GET read post lambda function
     const readPostFunction = new PythonFunction(
       this,
       `${SYSTEM_NAME}-read-post`,
@@ -147,7 +149,7 @@ export class PictatoLambdaStack extends cdk.Stack {
     );
     this.lambdaReadPostFunction = readPostFunction;
 
-    // DB delete_post
+    // DELETE post lambda function
     const deletePostFunction = new PythonFunction(
       this,
       `${SYSTEM_NAME}-delete-post`,
@@ -168,6 +170,7 @@ export class PictatoLambdaStack extends cdk.Stack {
     );
     this.lambdaDeletePostFunction = deletePostFunction;
 
+    // GET one data lambda function
     const getOneDataFunction = new PythonFunction(
       this,
       `${SYSTEM_NAME}-get-one-data`,
@@ -187,5 +190,41 @@ export class PictatoLambdaStack extends cdk.Stack {
       }
     );
     this.lambdaGetOneDataFunction = getOneDataFunction;
+
+    // Post image lambdag function
+    const postImageFunction = new PythonFunction(
+      this,
+      `${SYSTEM_NAME}-post-image`,
+      {
+        functionName: `${getAccountUniqueName(props.context)}-post-image`,
+        runtime: Runtime.PYTHON_3_10,
+        entry: path.join(__dirname, "../../../app/backend/s3/post-image"),
+        index: "post-image.py",
+        handler: "lambda_handler",
+        role: lambdaRoleForS3,
+        environment: {
+          TARGET_BUCKET: bucket.bucketName,
+        },
+      }
+    );
+    this.lambdaPostImageFunction = getOneDataFunction;
+
+    // GET image lambdag function
+    const getImageFunction = new PythonFunction(
+      this,
+      `${SYSTEM_NAME}-get-image`,
+      {
+        functionName: `${getAccountUniqueName(props.context)}-get-image`,
+        runtime: Runtime.PYTHON_3_10,
+        entry: path.join(__dirname, "../../../app/backend/s3/get-image"),
+        index: "get-image.py",
+        handler: "lambda_handler",
+        role: lambdaRoleForS3,
+        environment: {
+          TARGET_BUCKET: bucket.bucketName,
+        },
+      }
+    );
+    this.lambdaGetImageFunction = getImageFunction;
   }
 }
