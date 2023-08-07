@@ -49,7 +49,9 @@ export class PictatoApiGatewayStack extends cdk.Stack {
     });
     const users = api.root.addResource("gallery");
     const userId = users.addResource("{user_id}");
+    const index = userId.addResource("{index}");
 
+    // GET ./{user-id}
     const readRequest = userId.addMethod(
       "GET",
       new apigateway.LambdaIntegration(lambdaStack.lambdaReadPostFunction, {
@@ -77,6 +79,7 @@ export class PictatoApiGatewayStack extends cdk.Stack {
       },
     });
 
+    // POST {user-id}
     const createRequest = userId.addMethod(
       "POST",
       new apigateway.LambdaIntegration(lambdaStack.lambdaCreatePostFunction, {
@@ -105,8 +108,7 @@ export class PictatoApiGatewayStack extends cdk.Stack {
       },
     });
 
-    const index = userId.addResource("{index}");
-
+    // GET ./{user-id}/{index}
     const oneDataRequest = index.addMethod(
       "GET",
       new apigateway.LambdaIntegration(lambdaStack.lambdaGetOneDataFunction, {
@@ -135,6 +137,7 @@ export class PictatoApiGatewayStack extends cdk.Stack {
       },
     });
 
+    // POST ./{user-id}/{index}
     const deletePostRequest = index.addMethod(
       "DELETE",
       new apigateway.LambdaIntegration(lambdaStack.lambdaDeletePostFunction, {
