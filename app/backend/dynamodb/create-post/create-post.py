@@ -14,10 +14,10 @@ def lambda_handler(event, context):
     try:
         index = str(int(time.time()))
         date = str(datetime.fromtimestamp(int(time.time())))
-        userID = event["userId"]
+        userID = event["params"]["path"]["user_id"]
 
-        fileName = event["requestBody"]["fileName"]
-        memo = event["requestBody"]["memo"]
+        fileName = event["body-json"]["fileName"]
+        memo = event["body-json"]["memo"]
     except:
         return {
             "statusCode": 500,

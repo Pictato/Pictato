@@ -12,7 +12,7 @@ def lambda_handler(event, context):
 
     # 데이터 조회하기 위한 user-id 받아오기
     try:
-        userID = event["userId"]
+        userID = event["params"]["path"]["user_id"]
     except:
         return {
             "statusCode": 500,
