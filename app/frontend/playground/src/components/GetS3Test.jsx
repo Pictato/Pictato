@@ -8,8 +8,10 @@ const GetS3Test = () => {
 
   const handleGetRequest = async () => {
     try {
-      const res = await s3Api.getImage(fileNameRef.current.value);
-      setFile(res.data["body-json"].body);
+      // getImage 함수의 userId 파라미터에 넣을게 필요한데 여기는 단순히 s3테스트라 괜찮을듯?
+      // GetTest.jsx 에서만 userId 잘 넣어주면 될듯
+      const res = await s3Api.getImage("test", fileNameRef.current.value);
+      setFile(res.data.body);
 
       alert("GET에 성공했습니다.");
     } catch (err) {
