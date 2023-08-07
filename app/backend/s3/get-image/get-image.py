@@ -8,7 +8,7 @@ def lambda_handler(event, context):
     s3_client = boto3.client("s3")
     try:
         filename = event["params"]["querystring"]["filename"]
-        bucket_name = os.environ("TARGET_BUCKET")
+        bucket_name = os.environ["TARGET_BUCKET"]
         response = s3_client.get_object(
             Bucket=bucket_name,
             Key=filename,
