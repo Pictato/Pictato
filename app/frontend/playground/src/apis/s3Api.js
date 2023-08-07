@@ -1,18 +1,21 @@
 import axios from "axios";
 
-const ROUTE = "image";
+const ROUTE = "gallery";
 
 const s3Instance = axios.create({
-  baseURL:
-    "https://52ks59qzm5.execute-api.ap-northeast-2.amazonaws.com/default", // TODO: Add your API Gateway URL
+  baseURL: "", // TODO: Add your API Gateway URL
 });
 
-const postImage = async (fileName, formData) => {
-  return await s3Instance.post(`${ROUTE}?filename=${fileName}`, formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
+const postImage = async (userId, fileName, formData) => {
+  return await s3Instance.post(
+    `${ROUTE}/${userId}/image?filename=${fileName}`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
 };
 
 const getImage = async (fileName) => {

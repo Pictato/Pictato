@@ -19,7 +19,11 @@ const PostTest = () => {
       formData.append("image-file", fileRef.current.files[0]);
 
       await dynamoApi.createPost(userIdRef.current.value, DYNAMO_DATA);
-      await s3Api.postImage(fileRef.current.files[0].name, formData);
+      await s3Api.postImage(
+        userIdRef.current.value,
+        fileRef.current.files[0].name,
+        formData
+      );
 
       alert("POST에 성공했습니다.");
     } catch (err) {
