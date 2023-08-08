@@ -3,7 +3,7 @@ import { useState, useContext } from "react";
 import { AccountContext } from "../contexts/Account";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const { authenticate } = useContext(AccountContext);
@@ -11,7 +11,7 @@ const Login = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    authenticate(email, password)
+    authenticate(username, password)
       .then((data) => console.log("Logged in!", data))
       .catch((err) => console.log("Failed to login!", err));
   };
@@ -21,14 +21,14 @@ const Login = () => {
       <div className="card-body">
         <h2 className="card-title">로그인</h2>
         <div className="form-control w-full max-w-xs">
-          <label className="label" htmlFor="email">
-            <span className="label-text">Email</span>
+          <label className="label" htmlFor="username">
+            <span className="label-text">Username</span>
           </label>
           <input
-            type="email"
+            type="text"
             className="input input-bordered w-full max-w-xs"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
+            value={username}
+            onChange={(event) => setUsername(event.target.value)}
           />
         </div>
         <div className="form-contro w-full max-w-xs">
