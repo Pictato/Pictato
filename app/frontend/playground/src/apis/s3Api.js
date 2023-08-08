@@ -3,7 +3,7 @@ import axios from "axios";
 const ROUTE = "gallery";
 
 const s3Instance = axios.create({
-  baseURL: "", // TODO: Add your API Gateway URL
+  baseURL: "https://nea00qux6d.execute-api.ap-northeast-2.amazonaws.com/dev", // TODO: Add your API Gateway URL
 });
 
 const postImage = async (userId, fileName, formData) => {

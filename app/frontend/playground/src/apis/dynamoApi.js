@@ -3,7 +3,7 @@ import axios from "axios";
 const ROUTE = "gallery";
 
 const dynamoInstance = axios.create({
-  baseURL: "", // TODO: Add your API Gateway URL
+  baseURL: "https://nea00qux6d.execute-api.ap-northeast-2.amazonaws.com/dev", // TODO: Add your API Gateway URL
 });
 
 const createPost = async (userId, data) => {
