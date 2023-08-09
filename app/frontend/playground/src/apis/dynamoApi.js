@@ -6,9 +6,9 @@ const dynamoInstance = axios.create({
   baseURL: "https://nea00qux6d.execute-api.ap-northeast-2.amazonaws.com/dev", // TODO: Add your API Gateway URL
 });
 
-const createPost = async (userId, data) => {
+const createPost = async (userId, data, idToken) => {
   return await dynamoInstance.post(`${ROUTE}/${userId}`, data, {
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", Authorization: idToken },
   });
 };
 
