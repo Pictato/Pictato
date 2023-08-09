@@ -1,10 +1,12 @@
-import { useRef } from "react";
+import { useRef, useContext } from "react";
+
+import { AccountContext } from "../contexts/Account";
 
 import { dynamoApi } from "../apis/dynamoApi";
 import { s3Api } from "../apis/s3Api";
 
 const PostTest = () => {
-  const userIdRef = useRef("");
+  const { username, getIdToken } = useContext(AccountContext);
   const fileRef = useRef(undefined);
   const memoRef = useRef("");
 
@@ -18,11 +20,14 @@ const PostTest = () => {
       const formData = new FormData();
       formData.append("image-file", fileRef.current.files[0]);
 
-      await dynamoApi.createPost(userIdRef.current.value, DYNAMO_DATA);
+      const idToken = await getIdToken();
+
+      await dynamoApi.createPost(username, DYNAMO_DATA, idToken);
       await s3Api.postImage(
-        userIdRef.current.value,
+        username,
         fileRef.current.files[0].name,
-        formData
+        formData,
+        idToken
       );
 
       alert("POST에 성공했습니다.");
@@ -34,18 +39,12 @@ const PostTest = () => {
   return (
     <div className="card w-[369px] h-[585px] bg-base-100 shadow-xl">
       <div className="card-body">
-        <h2 className="card-title flex-col">
-          <input
-            className="input input-bordered w-full"
-            placeholder="Username"
-            ref={userIdRef}
-          />
-          <input
-            type="file"
-            className="file-input file-input-bordered w-full max-w-xs"
-            ref={fileRef}
-          />
-        </h2>
+        <h2 className="card-title">DynamoDB & S3</h2>
+        <input
+          type="file"
+          className="file-input file-input-bordered w-full max-w-xs"
+          ref={fileRef}
+        />
         <textarea
           className="textarea textarea-bordered h-full"
           placeholder="Memo"
