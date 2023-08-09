@@ -1,4 +1,5 @@
 import * as cdk from "aws-cdk-lib";
+import * as apigateway from "aws-cdk-lib/aws-apigateway";
 
 import { Construct } from "constructs";
 
@@ -6,8 +7,7 @@ import { PictatoStackProps } from "../pictato-stack";
 import { getAccountUniqueName } from "../config/accounts";
 import { SYSTEM_NAME } from "../config/commons";
 
-import * as apigateway from "aws-cdk-lib/aws-apigateway";
-
+import { PictatoCognitoStack } from "./cognito-stack";
 import { PictatoLambdaStack } from "./lambda-stack";
 import { requestTemplate } from "./mapping-template";
 
@@ -16,17 +16,31 @@ export class PictatoApiGatewayStack extends cdk.Stack {
     scope: Construct,
     id: string,
     props: PictatoStackProps,
+    cognitoStack: PictatoCognitoStack,
     lambdaStack: PictatoLambdaStack
   ) {
     super(scope, id, props);
 
+    const userPool = cognitoStack.userPool;
+
+    const auth = new apigateway.CognitoUserPoolsAuthorizer(
+      this,
+      `${SYSTEM_NAME}-pictato-Authorizer`,
+      {
+        authorizerName: `${getAccountUniqueName(
+          props.context
+        )}-pictato-Authorizer`.toLowerCase(),
+        cognitoUserPools: [userPool],
+      }
+    );
+
     const api = new apigateway.RestApi(this, `${SYSTEM_NAME}-pictato-api`, {
-      endpointConfiguration: {
-        types: [apigateway.EndpointType.REGIONAL],
-      },
       restApiName: `${getAccountUniqueName(
         props.context
       )}-pictato-api`.toLowerCase(),
+      endpointConfiguration: {
+        types: [apigateway.EndpointType.REGIONAL],
+      },
       deployOptions: {
         stageName: "dev",
       },
@@ -36,6 +50,7 @@ export class PictatoApiGatewayStack extends cdk.Stack {
           "X-Amz-Date",
           "Authorization",
           "X-Api-Key",
+          "Access-Key",
         ],
         allowMethods: ["OPTIONS", "GET", "POST", "PUT", "PATCH", "DELETE"],
         allowCredentials: true,
@@ -90,7 +105,11 @@ export class PictatoApiGatewayStack extends cdk.Stack {
             },
           },
         ],
-      })
+      }),
+      {
+        authorizer: auth,
+        authorizationType: apigateway.AuthorizationType.COGNITO,
+      }
     );
 
     createRequest.addMethodResponse({
@@ -170,7 +189,11 @@ export class PictatoApiGatewayStack extends cdk.Stack {
             },
           },
         ],
-      })
+      }),
+      {
+        authorizer: auth,
+        authorizationType: apigateway.AuthorizationType.COGNITO,
+      }
     );
 
     postImageRequest.addMethodResponse({

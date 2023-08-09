@@ -2,6 +2,7 @@ import * as cdk from "aws-cdk-lib";
 
 import { Construct } from "constructs";
 
+import { PictatoCognitoStack } from "./stack/cognito-stack";
 import { PictatoS3Stack } from "./stack/s3-stack";
 import { PictatoLambdaStack } from "./stack/lambda-stack";
 import { PictatoDynamoStack } from "./stack/dynamo-stack";
@@ -18,6 +19,12 @@ export interface PictatoStackProps extends cdk.StackProps {
 export class PictatoStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: PictatoStackProps) {
     super(scope, id, props);
+
+    const cognitoStack = new PictatoCognitoStack(
+      this,
+      `${SYSTEM_NAME}-cognitoStack`,
+      props
+    );
 
     const s3Stack = new PictatoS3Stack(this, `${SYSTEM_NAME}-s3Stack`, props);
     props.s3Stack = s3Stack;
@@ -41,6 +48,7 @@ export class PictatoStack extends cdk.Stack {
       this,
       `${SYSTEM_NAME}-apigatewayStack`,
       props,
+      cognitoStack,
       lambdaStack
     );
   }
