@@ -6,7 +6,7 @@ const s3Instance = axios.create({
   baseURL: "https://nea00qux6d.execute-api.ap-northeast-2.amazonaws.com/dev", // TODO: Add your API Gateway URL
 });
 
-const postImage = async (userId, fileName, formData, idToken) => {
+const postImage = async (userId, fileName, formData, idToken, accessToken) => {
   return await s3Instance.post(
     `${ROUTE}/${userId}/image?filename=${fileName}`,
     formData,
@@ -14,6 +14,7 @@ const postImage = async (userId, fileName, formData, idToken) => {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: idToken,
+        "Access-Token": accessToken,
       },
     }
   );

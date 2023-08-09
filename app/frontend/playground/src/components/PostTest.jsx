@@ -6,7 +6,7 @@ import { dynamoApi } from "../apis/dynamoApi";
 import { s3Api } from "../apis/s3Api";
 
 const PostTest = () => {
-  const { username, getIdToken } = useContext(AccountContext);
+  const { username, getIdToken, getAccessToken } = useContext(AccountContext);
   const fileRef = useRef(undefined);
   const memoRef = useRef("");
 
@@ -21,13 +21,15 @@ const PostTest = () => {
       formData.append("image-file", fileRef.current.files[0]);
 
       const idToken = await getIdToken();
+      const accessToken = await getAccessToken();
 
-      await dynamoApi.createPost(username, DYNAMO_DATA, idToken);
+      await dynamoApi.createPost(username, DYNAMO_DATA, idToken, accessToken);
       await s3Api.postImage(
         username,
         fileRef.current.files[0].name,
         formData,
-        idToken
+        idToken,
+        accessToken
       );
 
       alert("POST에 성공했습니다.");
