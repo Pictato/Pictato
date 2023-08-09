@@ -12,7 +12,11 @@ const Login = () => {
     event.preventDefault();
 
     authenticate(username, password)
-      .then((data) => console.log("Logged in!", data))
+      .then((data) => {
+        console.log("Logged in!", data);
+        alert("로그인 성공!");
+        location.reload();
+      })
       .catch((err) => console.log("Failed to login!", err));
   };
 

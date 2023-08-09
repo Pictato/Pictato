@@ -8,11 +8,12 @@ import Login from "./Login";
 const LoginStatus = () => {
   const [status, setStatus] = useState(false);
 
-  const { getSession, logout } = useContext(AccountContext);
+  const { getSession, setUsername, logout } = useContext(AccountContext);
 
   useEffect(() => {
     getSession().then((session) => {
       console.log("Session: ", session);
+      setUsername(session.idToken.payload["cognito:username"]);
       setStatus(true);
     });
   }, []);
@@ -24,7 +25,13 @@ const LoginStatus = () => {
           <div className="card-body">
             <h2 className="card-title">환영합니다!</h2>
             <div className="card-actions">
-              <button className="btn btn-accent w-full" onClick={logout}>
+              <button
+                className="btn btn-accent w-full"
+                onClick={() => {
+                  logout();
+                  location.reload();
+                }}
+              >
                 Logout
               </button>
             </div>
