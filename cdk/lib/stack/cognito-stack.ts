@@ -22,7 +22,7 @@ export class PictatoCognitoStack extends cdk.Stack {
         userPoolName: `${getAccountUniqueName(
           props.context
         )}-pictato-cognito`.toLowerCase(),
-        signInAliases: { username: true },
+        signInAliases: { username: true, email: true },
         passwordPolicy: {
           minLength: 8,
           requireUppercase: false,

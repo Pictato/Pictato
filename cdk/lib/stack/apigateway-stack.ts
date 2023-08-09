@@ -50,7 +50,7 @@ export class PictatoApiGatewayStack extends cdk.Stack {
           "X-Amz-Date",
           "Authorization",
           "X-Api-Key",
-          "Access-Key",
+          "Access-Token",
         ],
         allowMethods: ["OPTIONS", "GET", "POST", "PUT", "PATCH", "DELETE"],
         allowCredentials: true,
