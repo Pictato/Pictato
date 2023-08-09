@@ -1,14 +1,16 @@
-import { useState, useRef } from "react";
+import { useState, useContext } from "react";
+
+import { AccountContext } from "../contexts/Account";
 
 import { dynamoApi } from "../apis/dynamoApi";
 
 const GetDynamoTest = () => {
+  const { username } = useContext(AccountContext);
   const [data, setData] = useState([]);
-  const userIdRef = useRef("");
 
   const handleGetRequest = async () => {
     try {
-      const res = await dynamoApi.readAllPost(userIdRef.current.value);
+      const res = await dynamoApi.readAllPost(username);
       setData(res.data.body);
 
       alert("GET에 성공했습니다.");
@@ -32,21 +34,10 @@ const GetDynamoTest = () => {
   return (
     <div className="card min-w-[369px] min-h-[585px] bg-base-100 shadow-xl">
       <div className="card-body">
-        <h2 className="card-title">
-          <div className="join w-full">
-            <input
-              className="input input-bordered join-item w-full"
-              placeholder="Username"
-              ref={userIdRef}
-            />
-            <button
-              className="btn btn-secondary join-item rounded-r-full"
-              onClick={handleGetRequest}
-            >
-              GET
-            </button>
-          </div>
-        </h2>
+        <h2 className="card-title">DynamoDB</h2>
+        <button className="btn btn-secondary" onClick={handleGetRequest}>
+          GET
+        </button>
         <table className="table table-zebra">
           <thead>
             <tr>
