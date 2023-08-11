@@ -3,8 +3,7 @@ import boto3
 import os
 from PIL import Image
 from io import BytesIO
-
-s3 = boto3.client("s3")
+from urllib.parse import unquote
 
 
 def resize_image(image_data):
@@ -19,13 +18,13 @@ def resize_image(image_data):
 
 
 def lambda_handler(event, context):
+    s3 = boto3.client("s3")
+
     try:
         bucket = event["Records"][0]["s3"]["bucket"]["name"]
         key = event["Records"][0]["s3"]["object"]["key"]
-
-        if key.startswith("images/resized/"):
-            print("Image already resized:", key)
-            return {"statusCode": 200, "body": json.dumps("Image already resized.")}
+        key = unquote(key, encoding="utf-8")
+        split_key = key.split("/")
 
         response = s3.get_object(Bucket=bucket, Key=key)
         image_data = response["Body"].read()
@@ -33,7 +32,7 @@ def lambda_handler(event, context):
         resized_image = resize_image(image_data)
 
         target_bucket = os.environ["TARGET_BUCKET"]
-        target_key = "images/resized/" + key
+        target_key = f"{split_key[1]}/{split_key[2]}"
         s3.put_object(Bucket=target_bucket, Key=target_key, Body=resized_image)
 
         return {"statusCode": 200, "body": json.dumps("Image resized successfully!")}
