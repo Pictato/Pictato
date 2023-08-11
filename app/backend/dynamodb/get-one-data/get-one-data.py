@@ -10,11 +10,11 @@ def lambda_handler(event, context):
     table = dynamodb.Table(target_table)
 
     try:
-        userId = event["params"]["path"]["user_id"]
+        user_id = event["params"]["path"]["user_id"]
         index = event["params"]["path"]["index"]
     except:
         return {"statusCode": 500, "event": event}
 
-    item = table.get_item(Key={"user-id": userId, "index": index})["Item"]
+    item = table.get_item(Key={"user-id": user_id, "index": index})["Item"]
 
     return {"statusCode": 200, "body": item}
