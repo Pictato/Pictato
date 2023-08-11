@@ -63,6 +63,27 @@ export class PictatoLambdaStack extends cdk.Stack {
       }
     );
 
+    //lambda와 dynamodb를 위한 role
+    const lambdaRoleForDynamoAndS3 = new Role(
+      this,
+      `${SYSTEM_NAME}-lambda-dynamo-s3-role`,
+      {
+        roleName: `${getAccountUniqueName(
+          props.context
+        )}-lambda-dynamo-s3-role`,
+        assumedBy: new CompositePrincipal(
+          new ServicePrincipal("lambda.amazonaws.com")
+        ),
+        managedPolicies: [
+          ManagedPolicy.fromAwsManagedPolicyName(
+            "service-role/AWSLambdaBasicExecutionRole"
+          ),
+          ManagedPolicy.fromAwsManagedPolicyName("AmazonDynamoDBFullAccess"),
+          ManagedPolicy.fromAwsManagedPolicyName("AmazonS3FullAccess"),
+        ],
+      }
+    );
+
     // 이미지 리사이징
     const bucket = s3.Bucket.fromBucketName(
       this,
@@ -98,7 +119,7 @@ export class PictatoLambdaStack extends cdk.Stack {
       s3.EventType.OBJECT_CREATED,
       new s3n.LambdaDestination(imageResizerFunction),
       {
-        prefix: "images/",
+        prefix: "before_resize/",
       }
     );
 
@@ -123,8 +144,9 @@ export class PictatoLambdaStack extends cdk.Stack {
         ),
         index: "create-post.py",
         handler: "lambda_handler",
-        role: lambdaRoleForDynamo,
+        role: lambdaRoleForDynamoAndS3,
         environment: {
+          TARGET_BUCKET: bucket.bucketName,
           TARGET_TABLE: table.tableName,
         },
       }
