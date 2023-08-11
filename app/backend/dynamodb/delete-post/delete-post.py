@@ -8,21 +8,30 @@ def lambda_handler(event, context):
 
     dynamodb = boto3.resource("dynamodb")
     table = dynamodb.Table(target_table)
+    cognito = boto3.client("cognito-idp")
 
     try:
-        index = event["params"]["path"]["index"]
-        userID = event["params"]["path"]["user_id"]
+        access_token = event["params"]["header"]["access-token"]
+        cognito_user = cognito.get_user(AccessToken=access_token)
+        coginto_user_id = cognito_user["Username"]
 
+        index = event["params"]["path"]["index"]
+        user_id = event["params"]["path"]["user_id"]
     except:
         return {
             "statusCode": 500,
-            "body": json.dumps("Data loading error!"),
-            "error": event,
+            "body": json.dumps("Data loading or cognito error!"),
         }
 
-    try:
-        table.delete_item(Key={"user-id": userID, "index": index})
-    except:
-        return {"statusCode": 500, "body": json.dumps("delete item  error!!")}
+    if coginto_user_id == user_id:
+        try:
+            table.delete_item(Key={"user-id": user_id, "index": index})
+        except:
+            return {"statusCode": 500, "body": json.dumps("delete item  error!!")}
 
-    return {"statusCode": 200, "body": json.dumps("Delete data successful!!")}
+        return {"statusCode": 200, "body": json.dumps("Delete data successful!!")}
+    else:
+        return {
+            "statusCode": 500,
+            "body": json.dumps("You tried to delete to another User!!"),
+        }

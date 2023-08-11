@@ -161,7 +161,11 @@ export class PictatoApiGatewayStack extends cdk.Stack {
             },
           },
         ],
-      })
+      }),
+      {
+        authorizer: auth,
+        authorizationType: apigateway.AuthorizationType.COGNITO,
+      }
     );
 
     deletePostRequest.addMethodResponse({

@@ -26,7 +26,7 @@ def lambda_handler(event, context):
     except:
         return {
             "statusCode": 500,
-            "body": json.dumps("Data loading or get_user error!"),
+            "body": json.dumps("Data loading or cognito error!"),
         }
 
     if coginto_user_id == user_id:
