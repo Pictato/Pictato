@@ -9,7 +9,7 @@ const dynamoInstance = axios.create({
 const createPost = async (userId, data, idToken, accessToken) => {
   return await dynamoInstance.post(`${ROUTE}/${userId}`, data, {
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "multipart/form-data",
       Authorization: idToken,
       "Access-Token": accessToken,
     },
@@ -28,9 +28,13 @@ const readPost = async (userId, index) => {
   });
 };
 
-const deletePost = async (userId, index) => {
+const deletePost = async (userId, index, idToken, accessToken) => {
   return await dynamoInstance.delete(`${ROUTE}/${userId}/${index}`, {
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: idToken,
+      "Access-Token": accessToken,
+    },
   });
 };
 

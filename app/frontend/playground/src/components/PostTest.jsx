@@ -12,25 +12,27 @@ const PostTest = () => {
 
   const handlePostRequest = async () => {
     try {
-      const DYNAMO_DATA = {
-        fileName: fileRef.current.files[0].name,
-        memo: memoRef.current.value,
-      };
+      // const DYNAMO_DATA = {
+      //   fileName: fileRef.current.files[0].name,
+      //   memo: memoRef.current.value,
+      // };
 
       const formData = new FormData();
       formData.append("image-file", fileRef.current.files[0]);
+      formData.append("file-name", fileRef.current.files[0].name);
+      formData.append("memo", memoRef.current.value);
 
       const idToken = await getIdToken();
       const accessToken = await getAccessToken();
 
-      await dynamoApi.createPost(username, DYNAMO_DATA, idToken, accessToken);
-      await s3Api.postImage(
-        username,
-        fileRef.current.files[0].name,
-        formData,
-        idToken,
-        accessToken
-      );
+      await dynamoApi.createPost(username, formData, idToken, accessToken);
+      // await s3Api.postImage(
+      //   username,
+      //   fileRef.current.files[0].name,
+      //   formData,
+      //   idToken,
+      //   accessToken
+      // );
 
       alert("POST에 성공했습니다.");
     } catch (err) {

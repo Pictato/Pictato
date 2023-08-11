@@ -5,7 +5,7 @@ import { AccountContext } from "../contexts/Account";
 import { dynamoApi } from "../apis/dynamoApi";
 
 const GetDynamoTest = () => {
-  const { username } = useContext(AccountContext);
+  const { username, getIdToken, getAccessToken } = useContext(AccountContext);
   const [data, setData] = useState([]);
 
   const handleGetRequest = async () => {
@@ -20,8 +20,11 @@ const GetDynamoTest = () => {
   };
 
   const handleDelete = async (userId, index) => {
+    const idToken = await getIdToken();
+    const accessToken = await getAccessToken();
+
     try {
-      await dynamoApi.deletePost(userId, index);
+      await dynamoApi.deletePost(userId, index, idToken, accessToken);
       const res = await dynamoApi.readAllPost(userId);
       setData(res.data.body);
 

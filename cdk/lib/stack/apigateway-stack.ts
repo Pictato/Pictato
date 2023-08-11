@@ -94,8 +94,9 @@ export class PictatoApiGatewayStack extends cdk.Stack {
       "POST",
       new apigateway.LambdaIntegration(lambdaStack.lambdaCreatePostFunction, {
         proxy: false,
+        contentHandling: apigateway.ContentHandling.CONVERT_TO_TEXT,
         requestTemplates: {
-          "application/json": requestTemplate,
+          "multipart/form-data": requestTemplate,
         },
         integrationResponses: [
           {
@@ -175,8 +176,9 @@ export class PictatoApiGatewayStack extends cdk.Stack {
       },
     });
 
-    // POST ./{user-id}/image
     const image = userId.addResource("image");
+
+    // POST ./{user-id}/image
     const postImageRequest = image.addMethod(
       "POST",
       new apigateway.LambdaIntegration(lambdaStack.lambdaPostImageFunction, {
