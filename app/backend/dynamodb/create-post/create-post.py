@@ -33,10 +33,10 @@ def lambda_handler(event, context):
         decoded_image = decoded_form[image_start : image_end + 2]
         decoded_string = decoded_form[image_end + 2 :].decode("utf-8").split("\r\n")
 
-        file_name = f"{user_id}/{index}_{decoded_string[4]}"
+        file_name = f"{index}_{decoded_string[4]}"
         memo = decoded_string[8]
 
-        key_for_resize = f"before-resize/{file_name}"
+        key_for_resize = f"before-resize/{user_id}/{file_name}"
     except:
         return {
             "statusCode": 500,

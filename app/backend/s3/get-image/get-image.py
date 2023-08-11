@@ -8,10 +8,11 @@ def lambda_handler(event, context):
     s3_client = boto3.client("s3")
     try:
         filename = event["params"]["querystring"]["filename"]
+        user_id = event["params"]["path"]["user_id"]
         bucket_name = os.environ["TARGET_BUCKET"]
         response = s3_client.get_object(
             Bucket=bucket_name,
-            Key=filename,
+            Key=f"{user_id}/{filename}",
         )
         image_file_to_download = response["Body"].read()
         encoded_image = base64.b64encode(image_file_to_download).decode("utf-8")

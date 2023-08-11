@@ -119,7 +119,7 @@ export class PictatoLambdaStack extends cdk.Stack {
       s3.EventType.OBJECT_CREATED,
       new s3n.LambdaDestination(imageResizerFunction),
       {
-        prefix: "before_resize/",
+        prefix: "before-resize/",
       }
     );
 
@@ -149,6 +149,7 @@ export class PictatoLambdaStack extends cdk.Stack {
           TARGET_BUCKET: bucket.bucketName,
           TARGET_TABLE: table.tableName,
         },
+        timeout: cdk.Duration.seconds(10),
       }
     );
     this.lambdaCreatePostFunction = createPostFunction;
