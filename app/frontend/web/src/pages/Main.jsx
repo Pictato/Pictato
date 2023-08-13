@@ -1,8 +1,10 @@
 import { useContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import AccountContext from "../contexts/account-context";
 import Authenticate from "./Authenticate";
 
 const Main = () => {
+  const navigate = useNavigate();
   const { getSession, setUsername, username } = useContext(AccountContext);
   const [status, setStatus] = useState(false);
 
@@ -14,7 +16,7 @@ const Main = () => {
     });
   }, []);
 
-  return status ? "Logged in as " + username : <Authenticate />;
+  return status ? navigate(`/${username}`) : <Authenticate />;
 };
 
 export default Main;

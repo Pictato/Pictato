@@ -4,13 +4,17 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { AccountContextProvider } from "./contexts/account-context.jsx";
 import App from "./App.jsx";
 import Main from "./pages/Main.jsx";
+import Gallery from "./pages/Gallery.jsx";
 import "./styles/tailwind.css";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    children: [{ path: "/", element: <Main /> }],
+    children: [
+      { path: "/", element: <Main /> },
+      { path: "/:username", element: <Gallery /> },
+    ],
   },
 ]);
 
