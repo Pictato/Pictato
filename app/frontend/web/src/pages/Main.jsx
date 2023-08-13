@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect } from "react";
 import AccountContext from "../contexts/account-context";
-import Login from "./Login";
+import Authenticate from "./Authenticate";
 
 const Main = () => {
   const { getSession, setUsername, username } = useContext(AccountContext);
@@ -14,7 +14,7 @@ const Main = () => {
     });
   }, []);
 
-  return status ? "Logged in as " + username : <Login />;
+  return status ? "Logged in as " + username : <Authenticate />;
 };
 
 export default Main;
