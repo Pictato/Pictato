@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { dynamoApi } from "../apis/dynamoApi";
+import { galleryApi } from "../apis/galleryApi";
 import Navbar from "../components/ui/Navbar";
 
 const Gallery = () => {
@@ -13,7 +13,7 @@ const Gallery = () => {
   }, []);
 
   const handleGetRequest = async () => {
-    const res = await dynamoApi.readAllPost(space);
+    const res = await galleryApi.getAllPosts(space);
     setData(res.data.body);
   };
 
