@@ -6,36 +6,15 @@ import PictatoImage from '../assets/images/pictato.png';
 const WIDTH = Dimensions.get('window').width;
 
 function Main({ navigation }) {
-    const [fontLoaded, setFontLoaded] = useState(false);
-
-    useEffect(() => {
-        async function loadFonts() {
-            await Font.loadAsync({
-                'GowunBatang-Bold': require('../assets/fonts/GowunBatang-Bold.ttf'),
-                'PTSerif-BoldItalic' : require('../assets/fonts/PTSerif-BoldItalic.ttf'),
-                'PTSerif-Regular' : require('../assets/fonts/PTSerif-Regular.ttf')
-            });
-            setFontLoaded(true);
-        }
-
-        loadFonts();
-    }, []);
-
-    if (!fontLoaded) {
-        return null; 
-    }
 
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Pictato</Text>
-            <Text style={styles.slogan}>눈에 보이는 감동,
-            {'\n'}마음에 기록되는 순간</Text>
+            
             <Image source={PictatoImage} style={styles.image} resizeMode="cover" />
             <View style={styles.content}>
-                <Text style={styles.description}>
-                    React native playground for Pictato
-                    {'\n'}with Amazon Web Services
-                </Text>
+                <Text style={styles.slogan}>눈에 보이는 감동,
+                    {'\n'}마음에 기록되는 순간</Text>
                 <TouchableOpacity
                     style={styles.button}
                     onPress={() => navigation.navigate('Login')}
@@ -58,21 +37,22 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     title: {
-        fontSize: 24,
+        fontSize: 50,
+        color: 'gray',
         fontFamily: 'PTSerif-BoldItalic',
         marginTop: -80,
-        marginBottom: 30,
+        marginBottom: 70,
     },
 
     slogan: {
-        fontSize: 25,
+        fontSize: 20,
         fontFamily: 'GowunBatang-Bold',
         textAlign: 'center',
         marginTop: 15,
         marginBottom: 50,
     },
     image: {
-        flex: 0.35,
+        flex: 0.3,
         aspectRatio: 0.8,
         paddingBottom: 50
     },
@@ -87,13 +67,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 6,
         paddingVertical: 2,
         fontSize: 14,
-    },
-    description: {
-        fontFamily : 'PTSerif-Regular',
-        fontSize: 15,
-        textAlign: 'center',
-        marginVertical: 10,
-        marginBottom: 50,
     },
     button: {
         backgroundColor: '#F5DEB3',

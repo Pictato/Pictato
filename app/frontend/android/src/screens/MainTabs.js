@@ -1,9 +1,9 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import Feed from './Feed';
-import Profile from './Profile';
-import Post from './Post';
+import Feed from '../components/Feed';
+import Profile from '../components/Profile';
+import Post from '../components/Post';
 
 const Tab = createBottomTabNavigator();
 
