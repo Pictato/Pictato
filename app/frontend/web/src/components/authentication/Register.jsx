@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { CognitoUserAttribute } from "amazon-cognito-identity-js";
-import UserPool from "../UserPool";
+import UserPool from "../../UserPool";
 
 const Register = () => {
   const username = useRef();

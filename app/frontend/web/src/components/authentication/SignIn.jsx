@@ -1,5 +1,5 @@
 import { useContext, useRef } from "react";
-import AccountContext from "../contexts/account-context";
+import AccountContext from "../../contexts/account-context";
 
 const App = () => {
   const { authenticate } = useContext(AccountContext);

@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AccountContext from "../contexts/account-context";
-import Authenticate from "./Authenticate";
+import Authentication from "./Authentication";
 
 const Main = () => {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ const Main = () => {
     });
   }, []);
 
-  return status ? navigate(`/${username}`) : <Authenticate />;
+  return status ? navigate(`/${username}`) : <Authentication />;
 };
 
 export default Main;

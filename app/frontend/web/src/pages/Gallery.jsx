@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { dynamoApi } from "../api/dynamoApi";
+import { dynamoApi } from "../apis/dynamoApi";
 
 const Gallery = () => {
   const { username } = useParams();

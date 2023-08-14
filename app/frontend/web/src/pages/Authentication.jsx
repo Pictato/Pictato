@@ -1,6 +1,6 @@
 import { useState } from "react";
-import SignIn from "./SignIn";
-import Register from "./Register";
+import SignIn from "../components/authentication/SignIn";
+import Register from "../components/authentication/Register";
 import Pictato from "../assets/pictato.png";
 
 const tabContents = {
@@ -8,7 +8,7 @@ const tabContents = {
   회원가입: <Register />,
 };
 
-const Authenticate = () => {
+const Authentication = () => {
   const [curTab, setCurTab] = useState("로그인");
 
   return (
@@ -40,4 +40,4 @@ const Authenticate = () => {
   );
 };
 
-export default Authenticate;
+export default Authentication;
