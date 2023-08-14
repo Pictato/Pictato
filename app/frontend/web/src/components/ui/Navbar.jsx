@@ -1,10 +1,15 @@
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AccountContext from "../../contexts/account-context";
 
 const Navbar = ({ space }) => {
   const navigate = useNavigate();
   const { username, isSignedIn, signOut } = useContext(AccountContext);
+  const spaceRef = useRef();
+
+  const handleMoveSpace = () => {
+    navigate(`/${spaceRef.current.value}`);
+  };
 
   const handleSignOut = () => {
     signOut();
@@ -18,14 +23,20 @@ const Navbar = ({ space }) => {
       </div>
       <div className="flex-none gap-2">
         <div className="form-control">
-          <div className="join">
+          <form className="join">
             <input
               type="text"
               placeholder="Search"
               className="input input-bordered join-item w-24 md:w-auto"
+              ref={spaceRef}
             />
-            <button className="btn btn-secondary join-item">Go</button>
-          </div>
+            <button
+              onClick={handleMoveSpace}
+              className="btn btn-secondary join-item"
+            >
+              Go
+            </button>
+          </form>
         </div>
         {isSignedIn ? (
           <div className="dropdown dropdown-end">
@@ -39,10 +50,10 @@ const Navbar = ({ space }) => {
               className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
             >
               <li>
-                <a className="justify-between">
+                <Link to={`/${username}`} className="justify-between">
                   {username}
-                  <span className="badge">New</span>
-                </a>
+                  <span className="badge">My Space</span>
+                </Link>
               </li>
               <li>
                 <a onClick={handleSignOut}>Sign Out</a>
