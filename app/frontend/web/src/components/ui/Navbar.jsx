@@ -1,8 +1,10 @@
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import AccountContext from "../../contexts/account-context";
 
 const Navbar = ({ space }) => {
-  const { username } = useContext(AccountContext);
+  const navigate = useNavigate();
+  const { username, signOut } = useContext(AccountContext);
 
   return (
     <div className="navbar bg-base-100 shadow-xl rounded-box">
@@ -35,7 +37,14 @@ const Navbar = ({ space }) => {
                 </a>
               </li>
               <li>
-                <a>Logout</a>
+                <a
+                  onClick={() => {
+                    signOut();
+                    navigate("/");
+                  }}
+                >
+                  Logout
+                </a>
               </li>
             </ul>
           </div>
