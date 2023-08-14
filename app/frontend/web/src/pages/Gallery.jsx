@@ -1,20 +1,12 @@
-import { useContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import AccountContext from "../contexts/account-context";
 import { dynamoApi } from "../apis/dynamoApi";
 import Navbar from "../components/ui/Navbar";
 
 const Gallery = () => {
   const { space } = useParams();
 
-  const { getSession, setUsername } = useContext(AccountContext);
   const [data, setData] = useState([]);
-
-  useEffect(() => {
-    getSession().then((session) => {
-      setUsername(session.idToken.payload["cognito:username"]);
-    });
-  }, []);
 
   useEffect(() => {
     handleGetRequest();

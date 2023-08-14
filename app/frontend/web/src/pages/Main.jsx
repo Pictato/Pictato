@@ -5,17 +5,13 @@ import Authentication from "./Authentication";
 
 const Main = () => {
   const navigate = useNavigate();
-  const { getSession, setUsername, username } = useContext(AccountContext);
-  const [status, setStatus] = useState(false);
+  const { username, isSignedIn } = useContext(AccountContext);
 
   useEffect(() => {
-    getSession().then((session) => {
-      setUsername(session.idToken.payload["cognito:username"]);
-      setStatus(true);
-    });
-  }, []);
+    if (isSignedIn) navigate(`/${username}`);
+  }, [isSignedIn]);
 
-  return status ? navigate(`/${username}`) : <Authentication />;
+  return <Authentication />;
 };
 
 export default Main;

@@ -1,4 +1,4 @@
-import { useState, createContext } from "react";
+import { createContext, useState, useEffect } from "react";
 import { CognitoUser, AuthenticationDetails } from "amazon-cognito-identity-js";
 import Pool from "../UserPool";
 
@@ -6,6 +6,19 @@ const AccountContext = createContext();
 
 export const AccountContextProvider = ({ children }) => {
   const [username, setUsername] = useState("");
+  const [isSignedIn, setIsSignedIn] = useState(false);
+
+  useEffect(() => {
+    getSession()
+      .then((session) => {
+        setUsername(session.idToken.payload["cognito:username"]);
+        setIsSignedIn(true);
+      })
+      .catch(() => {
+        setUsername("");
+        setIsSignedIn(false);
+      });
+  }, []);
 
   const getSession = async () => {
     return await new Promise((resolve, reject) => {
@@ -50,9 +63,10 @@ export const AccountContextProvider = ({ children }) => {
     });
   };
 
-  const logout = () => {
+  const signOut = () => {
     const user = Pool.getCurrentUser();
     if (user) user.signOut();
+    setIsSignedIn(false);
   };
 
   const getAccessToken = async () =>
@@ -67,10 +81,11 @@ export const AccountContextProvider = ({ children }) => {
         authenticate,
         getSession,
         username,
+        isSignedIn,
         setUsername,
         getAccessToken,
         getIdToken,
-        logout,
+        signOut,
       }}
     >
       {children}
