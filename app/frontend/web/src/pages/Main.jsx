@@ -10,7 +10,6 @@ const Main = () => {
 
   useEffect(() => {
     getSession().then((session) => {
-      console.log("Session: ", session);
       setUsername(session.idToken.payload["cognito:username"]);
       setStatus(true);
     });

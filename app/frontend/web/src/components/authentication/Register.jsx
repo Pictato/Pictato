@@ -27,9 +27,8 @@ const Register = ({ onClickSignIn }) => {
       password.current.value,
       [attributeData],
       null,
-      (err, data) => {
-        if (err) console.log(err);
-        console.log(data);
+      (err) => {
+        if (err) alert(err);
       }
     );
   };

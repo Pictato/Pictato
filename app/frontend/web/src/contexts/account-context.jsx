@@ -36,15 +36,14 @@ export const AccountContextProvider = ({ children }) => {
 
       user.authenticateUser(authDetails, {
         onSuccess: (data) => {
-          console.log("onSuccess: ", data);
           resolve(data);
         },
         onFailure: (err) => {
-          console.error("onFailure: ", err);
+          alert("onFailure: " + err);
           reject(err);
         },
         newPasswordRequired: (data) => {
-          console.log("newPasswordRequired: ", data);
+          alert("newPasswordRequired: " + data);
           resolve(data);
         },
       });
