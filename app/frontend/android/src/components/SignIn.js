@@ -48,8 +48,8 @@ function Login({ navigation }) {
                         Create an account?{'    '}
                         <Text
                             style={styles.signUpTxtBtn}
-                            onPress={() => navigation.navigate('SignUp')}>
-                            SignUp
+                            onPress={() => navigation.navigate('Register')}>
+                            회원가입
                         </Text>
                     </Text>
                 </View>
