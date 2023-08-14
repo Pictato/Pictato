@@ -6,24 +6,6 @@ import PictatoImage from '../assets/images/pictato.png';
 const WIDTH = Dimensions.get('window').width;
 
 function Main({ navigation }) {
-    const [fontLoaded, setFontLoaded] = useState(false);
-
-    useEffect(() => {
-        async function loadFonts() {
-            await Font.loadAsync({
-                'GowunBatang-Bold': require('../assets/fonts/GowunBatang-Bold.ttf'),
-                'PTSerif-BoldItalic' : require('../assets/fonts/PTSerif-BoldItalic.ttf'),
-                'PTSerif-Regular' : require('../assets/fonts/PTSerif-Regular.ttf')
-            });
-            setFontLoaded(true);
-        }
-
-        loadFonts();
-    }, []);
-
-    if (!fontLoaded) {
-        return null; 
-    }
 
     return (
         <View style={styles.container}>
@@ -55,10 +37,11 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     title: {
-        fontSize: 24,
+        fontSize: 50,
+        color: 'gray',
         fontFamily: 'PTSerif-BoldItalic',
         marginTop: -80,
-        marginBottom: 30,
+        marginBottom: 70,
     },
 
     slogan: {
