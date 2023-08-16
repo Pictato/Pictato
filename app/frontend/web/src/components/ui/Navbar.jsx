@@ -1,6 +1,9 @@
 import { useContext, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AccountContext from "../../contexts/account-context";
+import Upload from "../upload/Upload";
+import { AiOutlinePlus } from "react-icons/ai";
+import User from "../../assets/user.png";
 
 const Navbar = ({ space }) => {
   const navigate = useNavigate();
@@ -38,11 +41,22 @@ const Navbar = ({ space }) => {
             </button>
           </form>
         </div>
+        {username === space && (
+          <>
+            <button
+              className="btn btn-accent btn-square"
+              onClick={() => window.my_modal_3.showModal()}
+            >
+              <AiOutlinePlus size="16" />
+            </button>
+            <Upload />
+          </>
+        )}
         {isSignedIn ? (
           <div className="dropdown dropdown-end">
             <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
               <div className="w-10 rounded-full">
-                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80" />
+                <img src={User} />
               </div>
             </label>
             <ul
