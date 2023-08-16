@@ -1,15 +1,13 @@
-import { useContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import AccountContext from "../contexts/account-context";
 import { galleryApi } from "../apis/galleryApi";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import Navbar from "../components/ui/Navbar";
-import { AiOutlineDelete } from "react-icons/ai";
+import Detail from "../components/polaroid/Detail";
 import "../styles/kccchassam.css";
 
 const Gallery = () => {
   const { space } = useParams();
-  const { username, getIdToken, getAccessToken } = useContext(AccountContext);
   const [gallery, setGallery] = useState([]);
 
   useEffect(() => {
@@ -20,18 +18,6 @@ const Gallery = () => {
 
     fetchGallery();
   }, [space]);
-
-  const handleDeleteRequest = async (index) => {
-    const idToken = await getIdToken();
-    const accessToken = await getAccessToken();
-
-    try {
-      await galleryApi.deletePolaroid(username, index, idToken, accessToken);
-      window.location.reload();
-    } catch (err) {
-      alert(`DELETE에 실패했습니다. (${err})`);
-    }
-  };
 
   return (
     <div className="flex flex-col gap-4 p-4 preview">
@@ -52,8 +38,11 @@ const Gallery = () => {
         <Masonry gutter="1rem">
           {gallery.map((piece) => (
             <div
-              className="card card-compact rounded-none bg-white shadow-xl"
+              className="card card-compact rounded-none bg-white shadow-xl cursor-pointer"
               key={piece["file-name"]}
+              onClick={() => {
+                window[piece["file-name"]].showModal();
+              }}
             >
               <figure className="px-4 pt-4">
                 <img
@@ -65,16 +54,6 @@ const Gallery = () => {
               </figure>
               <div className="card-body mt-2 items-end kcc-chassam">
                 <div className="flex items-center gap-4">
-                  {username === space && (
-                    <button
-                      className="btn btn-error btn-xs btn-square"
-                      onClick={() => {
-                        handleDeleteRequest(piece.index);
-                      }}
-                    >
-                      <AiOutlineDelete size="16" />
-                    </button>
-                  )}
                   <p className="text-xl">{piece.memo}</p>
                 </div>
               </div>
@@ -82,6 +61,13 @@ const Gallery = () => {
           ))}
         </Masonry>
       </ResponsiveMasonry>
+      {gallery.map((piece) => (
+        <Detail
+          key={`modal_${piece["file-name"]}`}
+          space={space}
+          piece={piece}
+        />
+      ))}
     </div>
   );
 };
