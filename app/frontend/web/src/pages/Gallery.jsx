@@ -56,18 +56,20 @@ const Gallery = () => {
                 <img
                   src={`https://team2-icn-pictato-bucket.s3.ap-northeast-2.amazonaws.com/${space}/${piece["file-name"]}`}
                   alt={piece["file-name"]}
+                  onError={(event) => (event.target.style.display = "none")}
                 />
+                <span className="loading loading-ring loading-lg"></span>
               </figure>
               <div className="card-body mt-2 items-end kcc-chassam">
                 <div className="flex items-center gap-4">
                   {username === space && (
                     <button
-                      className="btn btn-error btn-square"
+                      className="btn btn-error btn-xs btn-square"
                       onClick={() => {
                         handleDeleteRequest(piece.index);
                       }}
                     >
-                      <AiOutlineDelete size="24" />
+                      <AiOutlineDelete size="16" />
                     </button>
                   )}
                   <p className="text-xl">{piece.memo}</p>
