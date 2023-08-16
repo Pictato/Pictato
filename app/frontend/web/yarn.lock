@@ -3124,6 +3124,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-responsive-masonry@npm:^2.1.7":
+  version: 2.1.7
+  resolution: "react-responsive-masonry@npm:2.1.7"
+  checksum: d8fd1838f73554809ecf2fbb29605abdd40eecaeb09caf549ea674e7e319e02fa7ff7aae978914b16f3a5f802d03a16402765a093e0bbb1d782665fd41632d97
+  languageName: node
+  linkType: hard
+
 "react-router-dom@npm:^6.15.0":
   version: 6.15.0
   resolution: "react-router-dom@npm:6.15.0"
@@ -3896,9 +3903,11 @@ __metadata:
     eslint-plugin-react-hooks: ^4.6.0
     eslint-plugin-react-refresh: ^0.4.3
     postcss: ^8.4.27
+    prop-types: ^15.8.1
     react: ^18.2.0
     react-dom: ^18.2.0
     react-icons: ^4.10.1
+    react-responsive-masonry: ^2.1.7
     react-router-dom: ^6.15.0
     tailwindcss: ^3.3.3
     vite: ^4.4.5
