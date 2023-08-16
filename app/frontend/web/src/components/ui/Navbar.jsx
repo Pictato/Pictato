@@ -2,7 +2,7 @@ import { useContext, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AccountContext from "../../contexts/account-context";
 import Upload from "../upload/Upload";
-import { AiOutlinePlus } from "react-icons/ai";
+import { AiOutlineSearch, AiOutlinePlus } from "react-icons/ai";
 import User from "../../assets/user.png";
 
 const Navbar = ({ space }) => {
@@ -22,14 +22,14 @@ const Navbar = ({ space }) => {
   return (
     <div className="navbar bg-base-100 shadow-xl rounded-box">
       <div className="flex-1">
-        <a className="btn btn-ghost normal-case text-xl">{space}'s Pictato</a>
+        <a className="btn btn-ghost normal-case text-xl">{space}의 Pictato</a>
       </div>
       <div className="flex-none gap-2">
         <div className="form-control">
           <form className="join">
             <input
               type="text"
-              placeholder="Search"
+              placeholder="사용자 검색"
               className="input input-bordered join-item w-24 md:w-auto"
               ref={spaceRef}
             />
@@ -37,7 +37,7 @@ const Navbar = ({ space }) => {
               onClick={handleMoveSpace}
               className="btn btn-secondary join-item"
             >
-              Go
+              <AiOutlineSearch size="16" />
             </button>
           </form>
         </div>
@@ -45,7 +45,7 @@ const Navbar = ({ space }) => {
           <>
             <button
               className="btn btn-accent btn-square"
-              onClick={() => window.my_modal_3.showModal()}
+              onClick={() => window.upload_modal.showModal()}
             >
               <AiOutlinePlus size="16" />
             </button>
@@ -66,11 +66,11 @@ const Navbar = ({ space }) => {
               <li>
                 <Link to={`/${username}`} className="justify-between">
                   {username}
-                  <span className="badge">My Space</span>
+                  <span className="badge">나의 사진첩</span>
                 </Link>
               </li>
               <li>
-                <a onClick={handleSignOut}>Sign Out</a>
+                <a onClick={handleSignOut}>로그아웃</a>
               </li>
             </ul>
           </div>
