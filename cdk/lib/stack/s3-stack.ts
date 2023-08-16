@@ -1,5 +1,6 @@
 import * as cdk from "aws-cdk-lib";
 import * as s3 from "aws-cdk-lib/aws-s3";
+import * as iam from "aws-cdk-lib/aws-iam";
 
 import { Construct } from "constructs";
 
@@ -18,9 +19,24 @@ export class PictatoS3Stack extends cdk.Stack {
         props.context
       )}-pictato-bucket`.toLowerCase(),
       publicReadAccess: false,
-      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      blockPublicAccess: new s3.BlockPublicAccess({
+        blockPublicAcls: false,
+        blockPublicPolicy: false,
+        ignorePublicAcls: false,
+        restrictPublicBuckets: false,
+      }),
       encryption: s3.BucketEncryption.S3_MANAGED,
     });
+
+    bucket.addToResourcePolicy(
+      new iam.PolicyStatement({
+        sid: "AddPerm",
+        effect: iam.Effect.ALLOW,
+        principals: [new iam.AnyPrincipal()],
+        actions: ["s3:GetObject"],
+        resources: ["arn:aws:s3:::team2-icn-pictato-bucket/*"],
+      })
+    );
     this.bucket = bucket;
   }
 }
