@@ -49,14 +49,16 @@ const Gallery = () => {
             </figure>
             <div className="card-body mt-2 items-end kcc-chassam">
               <div className="flex items-center gap-4">
-                <button
-                  className="btn btn-error btn-square"
-                  onClick={() => {
-                    handleDeleteRequest(piece.index);
-                  }}
-                >
-                  <AiOutlineDelete size="24" />
-                </button>
+                {username === space && (
+                  <button
+                    className="btn btn-error btn-square"
+                    onClick={() => {
+                      handleDeleteRequest(piece.index);
+                    }}
+                  >
+                    <AiOutlineDelete size="24" />
+                  </button>
+                )}
                 <p className="text-xl">{piece.memo}</p>
               </div>
             </div>
