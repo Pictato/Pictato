@@ -66,11 +66,11 @@ const Detail = ({ space, piece }) => {
             </div>
             <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)]">
               <div className="card-body kcc-chassam">
-                <p>date: {piece.date}</p>
-                <p>file-name: {piece["file-name"]}</p>
-                <p>index: {piece.index}</p>
-                <p>memo: {piece.memo}</p>
-                <p>owner: {piece["user-id"]}</p>
+                <p className="truncate">date: {piece.date}</p>
+                <p className="truncate">file-name: {piece["file-name"]}</p>
+                <p className="truncate">index: {piece.index}</p>
+                <p className="truncate">memo: {piece.memo}</p>
+                <p className="truncate">owner: {piece["user-id"]}</p>
               </div>
             </div>
           </div>
