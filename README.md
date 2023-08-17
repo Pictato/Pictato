@@ -12,6 +12,7 @@
     <li><a href="#about-the-project">About The Project</a></li>
     <li><a href="#team-members">Team Members</a></li>
     <li><a href="#built-with">Built With</a></li>
+    <li><a href="#aws-architecture">AWS Architecture</a></li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#getting-started">Getting Started</a></li>
     <li><a href="#license">License</a></li>
@@ -64,6 +65,9 @@ Pictato는 KEB Software Bootcamp에서 어노테이션 AI 기업과 연계하여
 * <img src="https://img.shields.io/badge/AWS S3-569A31?style=for-the-badge&logo=amazons3&logoColor=white">
 * <img src="https://img.shields.io/badge/AWS DynamoDB-4053D6?style=for-the-badge&logo=amazondynamodb&logoColor=white"> 
 
+
+## AWS Architecture
+![image](https://github.com/Pictato/Pictato/assets/103167624/87d71242-dca1-453e-bcb1-7284f5abd2f6)
 
 
 <!-- USAGE -->
