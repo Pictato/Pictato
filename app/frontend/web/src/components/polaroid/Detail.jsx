@@ -1,11 +1,25 @@
 import { useContext, useState } from "react";
 import AccountContext from "../../contexts/account-context";
+import { useSpring, animated } from "@react-spring/web";
 import { galleryApi } from "../../apis/galleryApi";
 import { AiOutlineDelete, AiOutlineClose } from "react-icons/ai";
+
+const calc = (x, y) => [
+  -(y - window.innerHeight / 2) / 20,
+  (x - window.innerWidth / 2) / 20,
+  1,
+];
+const trans = (x, y, s) =>
+  `perspective(1000px) rotateX(${x}deg) rotateY(${y}deg) scale(${s})`;
 
 const Detail = ({ space, piece }) => {
   const { username, getIdToken, getAccessToken } = useContext(AccountContext);
   const [isFlipped, setIsFlipped] = useState(false);
+
+  const [props, set] = useSpring(() => ({
+    xys: [0, 0, 1],
+    config: { mass: 5, tension: 2000, friction: 200 },
+  }));
 
   const handleDeleteRequest = async (index) => {
     const idToken = await getIdToken();
@@ -22,7 +36,16 @@ const Detail = ({ space, piece }) => {
   return (
     <dialog id={piece["file-name"]} className="modal">
       <form method="dialog" className="flex flex-col items-center">
-        <div className="[perspective:1000px]">
+        <animated.div
+          className="[perspective:1000px]"
+          onMouseMove={({ clientX: x, clientY: y }) =>
+            set.start({ xys: calc(x, y) })
+          }
+          onMouseLeave={() => set({ xys: [0, 0, 1] })}
+          style={{
+            transform: props.xys.to(trans),
+          }}
+        >
           <div
             className={`cursor-pointer transition-all duration-500 [transform-style:preserve-3d] card card-compact rounded-none bg-white shadow-xl ${
               isFlipped && "[transform:rotateY(180deg)]"
@@ -51,7 +74,7 @@ const Detail = ({ space, piece }) => {
               </div>
             </div>
           </div>
-        </div>
+        </animated.div>
         <div className="modal-action">
           {username === space && (
             <button
