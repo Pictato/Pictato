@@ -3,7 +3,7 @@ import boto3
 import base64
 import os
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 def lambda_handler(event, context):
@@ -21,7 +21,7 @@ def lambda_handler(event, context):
         coginto_user_id = cognito_user["Username"]
 
         index = str(int(time.time()))
-        date = str(datetime.fromtimestamp(int(time.time())))
+        date = str(datetime.fromtimestamp(int(time.time())) + timedelta(hours=9))
         user_id = event["params"]["path"]["user_id"]
 
         form_data = event["body-json"]

@@ -21,7 +21,9 @@ def lambda_handler(event, context):
 
     try:
         # user-id 속성이 같은 놈들 return
-        query = table.query(KeyConditionExpression=Key("user-id").eq(user_id))
+        query = table.query(
+            KeyConditionExpression=Key("user-id").eq(user_id), ScanIndexForward=False
+        )
         # user-id 파티션의 각 튜플들을 dic 형태로 가지는 list
         # [{}, {}, {}]
         items = query["Items"]
