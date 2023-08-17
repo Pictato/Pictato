@@ -63,7 +63,7 @@ export class PictatoApiGatewayStack extends cdk.Stack {
     const userId = users.addResource("{user_id}");
     const index = userId.addResource("{index}");
 
-    // GET ./{user-id}
+    // GET ./{user_id}
     const readRequest = userId.addMethod(
       "GET",
       new apigateway.LambdaIntegration(lambdaStack.lambdaReadPostFunction, {
@@ -89,7 +89,7 @@ export class PictatoApiGatewayStack extends cdk.Stack {
       },
     });
 
-    // POST ./{user-id}
+    // POST ./{user_id}
     const createRequest = userId.addMethod(
       "POST",
       new apigateway.LambdaIntegration(lambdaStack.lambdaCreatePostFunction, {
@@ -120,7 +120,7 @@ export class PictatoApiGatewayStack extends cdk.Stack {
       },
     });
 
-    // GET ./{user-id}/{index}
+    // GET ./{user_id}/{index}
     const oneDataRequest = index.addMethod(
       "GET",
       new apigateway.LambdaIntegration(lambdaStack.lambdaGetOneDataFunction, {
@@ -178,7 +178,38 @@ export class PictatoApiGatewayStack extends cdk.Stack {
 
     const image = userId.addResource("image");
 
-    // POST ./{user-id}/image
+    // GET ./{user_id}/sort
+    const sort = userId.addResource("sort");
+
+    const getMonthlyPostRequest = sort.addMethod(
+      "GET",
+      new apigateway.LambdaIntegration(
+        lambdaStack.lambdaGetMonthlyPostFunction,
+        {
+          proxy: false,
+          requestTemplates: {
+            "application/json": requestTemplate,
+          },
+          integrationResponses: [
+            {
+              statusCode: "200",
+              responseParameters: {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+              },
+            },
+          ],
+        }
+      )
+    );
+
+    getMonthlyPostRequest.addMethodResponse({
+      statusCode: "200",
+      responseParameters: {
+        "method.response.header.Access-Control-Allow-Origin": true,
+      },
+    });
+
+    // POST ./{user_id}/image
     const postImageRequest = image.addMethod(
       "POST",
       new apigateway.LambdaIntegration(lambdaStack.lambdaPostImageFunction, {
@@ -209,7 +240,7 @@ export class PictatoApiGatewayStack extends cdk.Stack {
       },
     });
 
-    // GET ./{user-id}/image
+    // GET ./{user_id}/image
     const getImageRequest = image.addMethod(
       "GET",
       new apigateway.LambdaIntegration(lambdaStack.lambdaGetImageFunction, {

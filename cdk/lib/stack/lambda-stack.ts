@@ -27,6 +27,7 @@ export class PictatoLambdaStack extends cdk.Stack {
   public lambdaGetOneDataFunction: PythonFunction;
   public lambdaPostImageFunction: PythonFunction;
   public lambdaGetImageFunction: PythonFunction;
+  public lambdaGetMonthlyPostFunction: PythonFunction;
 
   constructor(scope: Construct, id: string, props: PictatoStackProps) {
     super(scope, id, props);
@@ -172,6 +173,27 @@ export class PictatoLambdaStack extends cdk.Stack {
     );
     this.lambdaReadPostFunction = readPostFunction;
 
+    //GET read post lambda function
+    const getMonthlyPostFunction = new PythonFunction(
+      this,
+      `${SYSTEM_NAME}-get-monthly-post`,
+      {
+        functionName: `${getAccountUniqueName(props.context)}-get-monthly-post`,
+        runtime: Runtime.PYTHON_3_10,
+        entry: path.join(
+          __dirname,
+          "../../../app/backend/dynamodb/get-monthly-post"
+        ),
+        index: "get-monthly-post.py",
+        handler: "lambda_handler",
+        role: lambdaRoleForDynamo,
+        environment: {
+          TARGET_TABLE: table.tableName,
+        },
+      }
+    );
+    this.lambdaGetMonthlyPostFunction = getMonthlyPostFunction;
+
     // DELETE post lambda function
     const deletePostFunction = new PythonFunction(
       this,
@@ -232,7 +254,7 @@ export class PictatoLambdaStack extends cdk.Stack {
     );
     this.lambdaPostImageFunction = postImageFunction;
 
-    // GET image lambdag function
+    // GET image lambda function
     const getImageFunction = new PythonFunction(
       this,
       `${SYSTEM_NAME}-get-image`,
