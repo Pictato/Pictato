@@ -43,12 +43,14 @@ const Navbar = ({ space }) => {
         </div>
         {username === space && (
           <>
-            <button
-              className="btn btn-accent btn-square"
-              onClick={() => window.upload_modal.showModal()}
-            >
-              <AiOutlinePlus size="16" />
-            </button>
+            <div className="tooltip tooltip-bottom" data-tip="추가">
+              <button
+                className="btn btn-accent btn-square"
+                onClick={() => window.upload_modal.showModal()}
+              >
+                <AiOutlinePlus size="16" />
+              </button>
+            </div>
             <Upload />
           </>
         )}
@@ -64,7 +66,11 @@ const Navbar = ({ space }) => {
               className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
             >
               <li>
-                <Link to={`/${username}`} className="justify-between">
+                <Link
+                  to={`/${username}`}
+                  className="justify-between"
+                  reloadDocument
+                >
                   {username}
                   <span className="badge">나의 사진첩</span>
                 </Link>
