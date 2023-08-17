@@ -53,9 +53,7 @@ const Gallery = () => {
                 <span className="loading loading-ring loading-lg"></span>
               </figure>
               <div className="card-body mt-2 items-end kcc-chassam">
-                <div className="flex items-center gap-4">
-                  <p className="text-xl">{piece.memo}</p>
-                </div>
+                <p className="text-xl">{piece.memo}</p>
               </div>
             </div>
           ))}
