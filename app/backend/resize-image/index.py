@@ -6,14 +6,14 @@ from io import BytesIO
 from urllib.parse import unquote
 
 
-def resize_image(image_data):
+def resize_image(image_data, image_format):
     image = Image.open(BytesIO(image_data))
     new_width = 300
     new_height = int(image.height * (new_width / image.width))
     resized_image = image.resize((new_width, new_height))
 
     output_buffer = BytesIO()
-    resized_image.save(output_buffer, format="JPEG")
+    resized_image.save(output_buffer, format=image_format)
     return output_buffer.getvalue()
 
 
@@ -26,10 +26,15 @@ def lambda_handler(event, context):
         key = unquote(key, encoding="utf-8")
         split_key = key.split("/")
 
+        if ".jpg" or ".jpeg" in key:
+            image_format = "PNG"
+        elif ".png" in key:
+            image_format = "JPEG"
+
         response = s3.get_object(Bucket=bucket, Key=key)
         image_data = response["Body"].read()
 
-        resized_image = resize_image(image_data)
+        resized_image = resize_image(image_data, image_format)
 
         target_bucket = os.environ["TARGET_BUCKET"]
         target_key = f"{split_key[1]}/{split_key[2]}"
