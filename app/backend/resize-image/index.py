@@ -1,13 +1,14 @@
 import json
 import boto3
 import os
-from PIL import Image
+from PIL import Image, ImageOps
 from io import BytesIO
 from urllib.parse import unquote
 
 
 def resize_image(image_data, image_format):
     image = Image.open(BytesIO(image_data))
+    image = ImageOps.exif_transpose(image)
     new_width = 300
     new_height = int(image.height * (new_width / image.width))
     resized_image = image.resize((new_width, new_height))
@@ -27,9 +28,9 @@ def lambda_handler(event, context):
         split_key = key.split("/")
 
         if ".jpg" or ".jpeg" in key:
-            image_format = "PNG"
-        elif ".png" in key:
             image_format = "JPEG"
+        elif ".png" in key:
+            image_format = "PNG"
 
         response = s3.get_object(Bucket=bucket, Key=key)
         image_data = response["Body"].read()
