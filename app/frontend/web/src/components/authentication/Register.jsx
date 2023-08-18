@@ -1,22 +1,9 @@
-import { useRef } from "react";
-import { CognitoUserAttribute } from "amazon-cognito-identity-js";
+import { useContext, useRef } from "react";
+import AccountContext from "../../contexts/account-context";
 import { AiOutlineUser, AiOutlineMail, AiOutlineLock } from "react-icons/ai";
-import UserPool from "../../UserPool";
-
-const getErrorMessage = (errorCode) => {
-  switch (errorCode) {
-    case "UsernameExistsException":
-      return "이미 사용 중인 사용자 이름입니다.";
-    case "InvalidParameterException":
-      return "모든 필수 정보를 입력해주세요.";
-    case "InvalidPasswordException":
-      return "유효하지 않은 비밀번호입니다. 비밀번호는 영문, 숫자, 특수 문자를 포함하여야 합니다.";
-    default:
-      return "알 수 없는 오류가 발생했습니다.";
-  }
-};
 
 const Register = ({ onClickSignIn }) => {
+  const { signUp } = useContext(AccountContext);
   const username = useRef();
   const email = useRef();
   const password = useRef();
@@ -25,26 +12,11 @@ const Register = ({ onClickSignIn }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (password.current.value !== confirmPassword.current.value) {
-      alert("비밀번호가 일치하지 않습니다.");
-      return;
-    }
-
-    const attributeData = new CognitoUserAttribute({
-      Name: "email",
-      Value: email.current.value,
-    });
-
-    UserPool.signUp(
+    signUp(
       username.current.value,
       password.current.value,
-      [attributeData],
-      null,
-      (err) => {
-        err
-          ? alert(getErrorMessage(err.code))
-          : alert("가입이 완료되었습니다.").then(window.location.reload());
-      }
+      confirmPassword.current.value,
+      email.current.value
     );
   };
 
