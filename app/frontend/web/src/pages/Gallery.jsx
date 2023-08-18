@@ -66,7 +66,9 @@ const Gallery = () => {
             >
               <figure className="px-4 pt-4">
                 <img
-                  src={`https://team2-icn-pictato-bucket.s3.ap-northeast-2.amazonaws.com/${space}/${piece["file-name"]}`}
+                  src={`${import.meta.env.VITE_S3_URL}/${space}/${
+                    piece["file-name"]
+                  }`}
                   alt={piece["file-name"]}
                   onError={(event) => (event.target.style.display = "none")}
                 />

@@ -3,7 +3,7 @@ import axios from "axios";
 const ROUTE = "gallery";
 
 const instance = axios.create({
-  baseURL: "https://ex5itkc5kl.execute-api.ap-northeast-2.amazonaws.com/dev",
+  baseURL: import.meta.env.VITE_API_BASE_URL,
 });
 
 const postPolaroid = async (userId, data, idToken, accessToken) => {
