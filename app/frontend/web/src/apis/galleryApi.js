@@ -16,10 +16,13 @@ const postPolaroid = async (userId, data, idToken, accessToken) => {
   });
 };
 
-const getAllPolaroids = async (userId) => {
-  return await instance.get(`${ROUTE}/${userId}`, {
-    headers: { "Content-Type": "application/json" },
-  });
+const getAllPolaroids = async (userId, year, month) => {
+  return await instance.get(
+    `${ROUTE}/${userId}/sort?year=${year}&month=${month}`,
+    {
+      headers: { "Content-Type": "application/json" },
+    }
+  );
 };
 
 const deletePolaroid = async (userId, index, idToken, accessToken) => {

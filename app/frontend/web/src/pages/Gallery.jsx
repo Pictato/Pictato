@@ -9,19 +9,39 @@ import "../styles/kccchassam.css";
 const Gallery = () => {
   const { space } = useParams();
   const [gallery, setGallery] = useState([]);
+  const [month, setMonth] = useState(new Date().getMonth() + 1);
 
   useEffect(() => {
     const fetchGallery = async () => {
-      const res = await galleryApi.getAllPolaroids(space);
+      const res = await galleryApi.getAllPolaroids(
+        space,
+        new Date().getFullYear(),
+        month
+      );
       setGallery(res.data.body);
     };
 
     fetchGallery();
-  }, [space]);
+  }, [space, month]);
 
   return (
     <div className="flex flex-col gap-4 p-4 preview">
       <Navbar space={space} />
+      <div>
+        <select
+          className="select select-ghost text-4xl"
+          value={month}
+          onChange={(event) => setMonth(event.target.value)}
+        >
+          {[...Array(12).keys()]
+            .filter((_, index) => index < new Date().getMonth() + 1)
+            .map((month) => (
+              <option key={month} value={month + 1}>
+                {month + 1}월
+              </option>
+            ))}
+        </select>
+      </div>
       <ResponsiveMasonry
         columnsCountBreakPoints={{
           0: 1,
