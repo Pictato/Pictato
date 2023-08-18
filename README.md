@@ -5,16 +5,16 @@
 # Pictato
 
 <details>
-  <summary>Table of Contents</summary>
+  <summary><strong>&nbsp;Table of Contents</strong></summary>
   
-1. [About The Project](#about-the-project)<br/>
-2. [Team Members](#team-members)<br/>
-3. [Built With](#built-with)<br/>
-4. [AWS Architecture](#aws-architecture)<br/>
-5. [Usage](#usage)<br/>
-6. [Getting Started](#getting-started)<br/>
-7. [License](#license)<br/>
-8. [Contact](#contact)<br/>
+[About The Project](#about-the-project)<br/>
+[Team Members](#team-members)<br/>
+[Built With](#built-with)<br/>
+[AWS Architecture](#aws-architecture)<br/>
+[Usage](#usage)<br/>
+[Getting Started](#getting-started)<br/>
+[License](#license)<br/>
+[Contact](#contact)<br/>
 </details>
 
 </div>
