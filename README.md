@@ -6,7 +6,8 @@
 
 <details>
   <summary><strong>&nbsp;Table of Contents</strong></summary>
-  
+
+&nbsp;  
 [About The Project](#about-the-project)<br/>
 [Team Members](#team-members)<br/>
 [Built With](#built-with)<br/>
