@@ -1,6 +1,6 @@
 <div align="center">
   
-![Pictato](https://avatars.githubusercontent.com/u/140679134?s=400)
+![Pictato](https://avatars.githubusercontent.com/u/140679134?s=400&u=606810ca49ec0b0d607e2dfa90ce9eaf4bc26051&v=4)
 
 # Pictato
 
