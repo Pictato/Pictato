@@ -103,6 +103,7 @@ export class PictatoLambdaStack extends cdk.Stack {
         handler: "lambda_handler",
         role: lambdaRoleForS3,
         timeout: cdk.Duration.seconds(10),
+        memorySize: 256,
         environment: {
           TARGET_BUCKET: bucket.bucketName,
         },
