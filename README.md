@@ -13,7 +13,6 @@
 [AWS Architecture](#aws-architecture)<br/>
 [Usage](#usage)<br/>
 [Getting Started](#getting-started)<br/>
-[License](#license)<br/>
 [Contact](#contact)<br/>
 </details>
 
@@ -120,11 +119,6 @@ Pictato는 KEB Software Bootcamp에서 어노테이션 AI 기업과 연계하여
    ```sh
    yarn dev
    ```
-
-&nbsp;
-
-<!-- LICENSE -->
-## License
 
 &nbsp;
 
