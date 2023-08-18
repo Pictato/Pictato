@@ -12,8 +12,8 @@ const Gallery = () => {
   const [month, setMonth] = useState(new Date().getMonth() + 1);
 
   useEffect(() => {
-    const fetchGallery = async () => {
-      const res = await galleryApi.getAllPolaroids(
+    const fetchMonthGallery = async () => {
+      const res = await galleryApi.getMonthPolaroids(
         space,
         new Date().getFullYear(),
         month
@@ -21,7 +21,12 @@ const Gallery = () => {
       setGallery(res.data.body);
     };
 
-    fetchGallery();
+    const fetchAllGallery = async () => {
+      const res = await galleryApi.getAllPolaroids(space);
+      setGallery(res.data.body);
+    };
+
+    month === "all" ? fetchAllGallery() : fetchMonthGallery();
   }, [space, month]);
 
   return (
@@ -40,6 +45,9 @@ const Gallery = () => {
                 {month + 1}월
               </option>
             ))}
+          <option key="all" value="all">
+            전체
+          </option>
         </select>
       </div>
       <ResponsiveMasonry
