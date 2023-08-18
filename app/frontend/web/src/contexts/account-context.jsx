@@ -2,6 +2,23 @@ import { createContext, useState, useEffect } from "react";
 import { CognitoUser, AuthenticationDetails } from "amazon-cognito-identity-js";
 import Pool from "../UserPool";
 
+const getErrorMessage = (errorCode) => {
+  switch (errorCode) {
+    case "UserNotFoundException":
+      return "사용자를 찾을 수 없습니다.";
+    case "NotAuthorizedException":
+      return "아이디 또는 비밀번호가 일치하지 않습니다.";
+    case "PasswordResetRequiredException":
+      return "비밀번호 재설정이 필요합니다.";
+    case "UserNotConfirmedException":
+      return "이메일 인증 후 로그인이 가능합니다.";
+    case "InvalidParameterException":
+      return "모든 필수 정보를 입력해주세요.";
+    default:
+      return "로그인 오류가 발생했습니다.";
+  }
+};
+
 const AccountContext = createContext();
 
 export const AccountContextProvider = ({ children }) => {
@@ -52,7 +69,7 @@ export const AccountContextProvider = ({ children }) => {
           resolve(data);
         },
         onFailure: (err) => {
-          alert("onFailure: " + err);
+          alert(getErrorMessage(err.code));
           reject(err);
         },
         newPasswordRequired: (data) => {

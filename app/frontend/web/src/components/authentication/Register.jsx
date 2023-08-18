@@ -3,6 +3,19 @@ import { CognitoUserAttribute } from "amazon-cognito-identity-js";
 import { AiOutlineUser, AiOutlineMail, AiOutlineLock } from "react-icons/ai";
 import UserPool from "../../UserPool";
 
+const getErrorMessage = (errorCode) => {
+  switch (errorCode) {
+    case "UsernameExistsException":
+      return "이미 사용 중인 사용자 이름입니다.";
+    case "InvalidParameterException":
+      return "모든 필수 정보를 입력해주세요.";
+    case "InvalidPasswordException":
+      return "유효하지 않은 비밀번호입니다. 비밀번호는 영문, 숫자, 특수 문자를 포함하여야 합니다.";
+    default:
+      return "알 수 없는 오류가 발생했습니다.";
+  }
+};
+
 const Register = ({ onClickSignIn }) => {
   const username = useRef();
   const email = useRef();
@@ -28,7 +41,9 @@ const Register = ({ onClickSignIn }) => {
       [attributeData],
       null,
       (err) => {
-        if (err) alert(err);
+        err
+          ? alert(getErrorMessage(err.code))
+          : alert("가입이 완료되었습니다.").then(window.location.reload());
       }
     );
   };
