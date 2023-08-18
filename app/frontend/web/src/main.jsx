@@ -6,6 +6,7 @@ import App from "./App.jsx";
 import Main from "./pages/Main.jsx";
 import Gallery from "./pages/Gallery.jsx";
 import "./styles/tailwind.css";
+import "./styles/pretendard.css";
 
 const router = createBrowserRouter([
   {
