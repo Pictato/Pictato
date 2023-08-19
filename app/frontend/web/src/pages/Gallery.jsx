@@ -77,10 +77,11 @@ const Gallery = () => {
                   src={`${import.meta.env.VITE_S3_URL}/${space}/${
                     piece["file-name"]
                   }`}
-                  alt={piece["file-name"]}
-                  onError={(event) => (event.target.style.display = "none")}
+                  width="300"
+                  onError={(event) => {
+                    event.target.src = `https://team2-icn-pictato-bucket.s3.ap-northeast-2.amazonaws.com/before-resize/${space}/${piece["file-name"]}`;
+                  }}
                 />
-                <span className="loading loading-ring loading-lg"></span>
               </figure>
               <div className="card-body mt-2 items-end kcc-chassam">
                 <p className="text-xl">{piece.memo}</p>
