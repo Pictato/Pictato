@@ -25,6 +25,7 @@ def lambda_handler(event, context):
         bucket = event["Records"][0]["s3"]["bucket"]["name"]
         key = event["Records"][0]["s3"]["object"]["key"]
         key = unquote(key, encoding="utf-8")
+        key = key.replace("+", " ")
         split_key = key.split("/")
 
         if ".jpg" or ".jpeg" in key:
