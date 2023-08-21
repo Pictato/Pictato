@@ -31,6 +31,7 @@ const Detail = ({ space, piece }) => {
       window.location.reload();
     } catch (err) {
       alert(`DELETE에 실패했습니다. (${err})`);
+      setIsProcessing(false);
     }
   };
 

@@ -22,6 +22,7 @@ const Upload = () => {
       window.location.reload();
     } catch (err) {
       alert(`POST에 실패했습니다. (${err})`);
+      setIsProcessing(false);
     }
   };
 
