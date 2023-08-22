@@ -34,7 +34,11 @@ export class PictatoS3Stack extends cdk.Stack {
         effect: iam.Effect.ALLOW,
         principals: [new iam.AnyPrincipal()],
         actions: ["s3:GetObject"],
-        resources: ["arn:aws:s3:::team2-icn-pictato-bucket/*"],
+        resources: [
+          `arn:aws:s3:::${getAccountUniqueName(
+            props.context
+          )}-icn-pictato-bucket/*`.toLowerCase(),
+        ],
       })
     );
     this.bucket = bucket;
